@@ -8,4 +8,6 @@ import com.plataforma.empleo.entidad.Persona;
 @Repository
 public interface UsuarioRepositorio extends JpaRepository<Persona, Long> {
 
+	
+	public Persona findByEmail(String email);
 }

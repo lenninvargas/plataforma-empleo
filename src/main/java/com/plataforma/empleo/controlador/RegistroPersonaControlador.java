@@ -29,7 +29,7 @@ public class RegistroPersonaControlador {
 	}
 	
 	@PostMapping()
-	public String registrarCuentaUsuario(@ModelAttribute("usuario") UsuarioRegistroDTO usuarioRegistroDTO) {
+	public String registrarCuentaUsuario(@ModelAttribute("persona") UsuarioRegistroDTO usuarioRegistroDTO) {
 		
 		usuarioServicio.guardarPersona(usuarioRegistroDTO);
 		
