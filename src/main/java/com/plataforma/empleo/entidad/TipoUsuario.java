@@ -1,6 +1,6 @@
 package com.plataforma.empleo.entidad;
 
-import jakarta.persistence.Column;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_tipo_usuario")
-public class Tipo_Usuario {
+public class TipoUsuario {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +17,15 @@ public class Tipo_Usuario {
 	
 	
 	private String nombre;
+	
+	public TipoUsuario(String nombre) {
+		super();	
+		this.nombre = nombre;
+	}
+	
+	public TipoUsuario() {
+		super();
+	}
 
 
 	public Long getId() {
@@ -38,19 +47,11 @@ public class Tipo_Usuario {
 		this.nombre = nombre;
 	}
 	
-	public Tipo_Usuario(Long id, String nombre) {
+	public TipoUsuario(Long id, String nombre) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 	}
 	
-	public Tipo_Usuario(String nombre) {
-		super();
-		
-		this.nombre = nombre;
-	}
 	
-	public Tipo_Usuario() {
-		super();
-	}
 }

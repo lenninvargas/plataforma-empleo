@@ -1,39 +1,82 @@
 package com.plataforma.empleo.controlador;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.plataforma.empleo.entidad.Persona;
+import com.plataforma.empleo.servicio.TipoUsuarioServicio;
 import com.plataforma.empleo.servicio.UsuarioServicio;
-import com.plataforma.empleo.usuarios.dto.UsuarioRegistroDTO;
+
+import jakarta.servlet.http.HttpSession;
+
 
 @Controller
-@RequestMapping("/registro")
 public class RegistroPersonaControlador {
 
 	@Autowired
 	private UsuarioServicio usuarioServicio;
 	
+	@Autowired
+	private TipoUsuarioServicio tipoUsuarioServicio;
 	
-	@ModelAttribute("persona")
-	public UsuarioRegistroDTO retornarNuevoRegistroDTO() {
-		return new UsuarioRegistroDTO();
+	
+	@GetMapping("/")
+	public String login(Model model) {
+		
+		model.addAttribute("usuario", new Persona());
+		
+		return "login";
 	}
 	
-	@GetMapping
-	public String mostrarFormularioDeRegistro() {
-		return "registro";
+	@PostMapping("/login")
+	public String loginPost(Persona usuario, Model model, HttpSession session) {
+		
+		boolean usuarioValido = usuarioServicio.validarUsuario(usuario, session);
+		
+		if(usuarioValido) {
+			
+			return "redirect:/menu";
+		}
+		
+		model.addAttribute("loginInvalido", "No existe el usuario");
+		model.addAttribute("usuario", new Persona());
+		
+		return "login";
 	}
 	
-	@PostMapping()
-	public String registrarCuentaUsuario(@ModelAttribute("persona") UsuarioRegistroDTO usuarioRegistroDTO) {
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/";
+	}
+	
+	
+	
+	@GetMapping("/registrar")
+	public String mostrarFormularioCrearUsuario(Model model) {
+			
+		model.addAttribute("usuario", new Persona());
 		
-		usuarioServicio.guardarPersona(usuarioRegistroDTO);
+		model.addAttribute("tipoUsuarios", tipoUsuarioServicio.obtenerTipoUsuarios());
 		
-		return "redirect:registro?exito";
+		
+		return "registrar_usuario";
+		
+	}
+	
+	@PostMapping("/registrar")
+	public String crearPersona(@ModelAttribute Persona persona) {
+			
+	
+		usuarioServicio.crearUsuarioLogin(persona);
+		
+		return "redirect:/";
+		
 	}
 	
 }

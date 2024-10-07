@@ -1,60 +1,54 @@
 package com.plataforma.empleo.entidad;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
-import jakarta.persistence.JoinTable;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "tb_usuarios", uniqueConstraints = @UniqueConstraint(columnNames = "correo"))
+@Table(name = "tb_persona")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Persona {
+	
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
+	@Column(name = "id_persona")
+	private Integer idPersona;
+	
 	private String nombre;
-
-	private String apellido;
-
-	private String pais;
-
+	
+	private String apellidos;
+	
 	private String direccion;
-
+	
+	@Column(length = 8)
 	private String dni;
-
+	
+	@Column(length = 9)
 	private String celular;
+	
 
 	private String correo;
-
-	private String usuario;
+	
 
 	private String password;
-
-	//Aprender
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(
-				name= "tb_usuarios_roles",
-				joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"),
-				inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-	private Collection<Tipo_Usuario> id_tipo_usuario;
-
-	public Long getId() {
-		return id;
+	
+	@Temporal(value = TemporalType.DATE)
+	private LocalDate fechaNacimiento;
+	
+	@ManyToOne(targetEntity = TipoUsuario.class)
+	@JoinColumn(name = "id_tipo_usuario")
+	private TipoUsuario tipoUsuario;
+	
+	
+	public Integer getIdPersona() {
+		return idPersona;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdPersona(Integer idPersona) {
+		this.idPersona = idPersona;
 	}
 
 	public String getNombre() {
@@ -65,20 +59,12 @@ public class Persona {
 		this.nombre = nombre;
 	}
 
-	public String getApellido() {
-		return apellido;
+	public String getApellidos() {
+		return apellidos;
 	}
 
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
-	}
-
-	public String getPais() {
-		return pais;
-	}
-
-	public void setPais(String pais) {
-		this.pais = pais;
+	public void setApellidos(String apellidos) {
+		this.apellidos = apellidos;
 	}
 
 	public String getDireccion() {
@@ -113,14 +99,6 @@ public class Persona {
 		this.correo = correo;
 	}
 
-	public String getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
-	}
-
 	public String getPassword() {
 		return password;
 	}
@@ -129,47 +107,57 @@ public class Persona {
 		this.password = password;
 	}
 
-	public Collection<Tipo_Usuario> getId_tipo_usuario() {
-		return id_tipo_usuario;
+	public LocalDate getFechaNacimiento() {
+		return fechaNacimiento;
 	}
 
-	public void setId_tipo_usuario(Collection<Tipo_Usuario> id_tipo_usuario) {
-		this.id_tipo_usuario = id_tipo_usuario;
+	public void setFechaNacimiento(LocalDate fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public TipoUsuario getTipoUsuario() {
+		return tipoUsuario;
+	}
+
+	public void setTipoUsuario(TipoUsuario tipoUsuario) {
+		this.tipoUsuario = tipoUsuario;
+	}
+
+	public Persona(Integer idPersona, String nombre, String apellidos, String direccion, String dni, String celular,
+			String correo, String password, LocalDate fechaNacimiento, TipoUsuario tipoUsuario) {
+		super();
+		this.idPersona = idPersona;
+		this.nombre = nombre;
+		this.apellidos = apellidos;
+		this.direccion = direccion;
+		this.dni = dni;
+		this.celular = celular;
+		this.correo = correo;
+		this.password = password;
+		this.fechaNacimiento = fechaNacimiento;
+		this.tipoUsuario = tipoUsuario;
+	}
+
+	public Persona(String nombre, String apellidos, String direccion, String dni, String celular, String correo,
+			String password, LocalDate fechaNacimiento, TipoUsuario tipoUsuario) {
+		super();
+		this.nombre = nombre;
+		this.apellidos = apellidos;
+		this.direccion = direccion;
+		this.dni = dni;
+		this.celular = celular;
+		this.correo = correo;
+		this.password = password;
+		this.fechaNacimiento = fechaNacimiento;
+		this.tipoUsuario = tipoUsuario;
 	}
 
 	public Persona() {
 		super();
 	}
-
-	public Persona(Long id, String nombre, String apellido, String pais, String direccion, String dni, String celular,
-			String correo, String usuario, String password, Collection<Tipo_Usuario> id_tipo_usuario) {
-		super();
-		this.id = id;
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.pais = pais;
-		this.direccion = direccion;
-		this.dni = dni;
-		this.celular = celular;
-		this.correo = correo;
-		this.usuario = usuario;
-		this.password = password;
-		this.id_tipo_usuario = id_tipo_usuario;
-	}
-
-	public Persona(String nombre, String apellido, String pais, String direccion, String dni, String celular,
-			String correo, String usuario, String password, Collection<Tipo_Usuario> id_tipo_usuario) {
-		super();
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.pais = pais;
-		this.direccion = direccion;
-		this.dni = dni;
-		this.celular = celular;
-		this.correo = correo;
-		this.usuario = usuario;
-		this.password = password;
-		this.id_tipo_usuario = id_tipo_usuario;
-	}
-
+	
+	
+	
+	
 }
+

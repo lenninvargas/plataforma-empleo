@@ -1,14 +1,19 @@
 package com.plataforma.empleo.servicio;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+
 
 import com.plataforma.empleo.entidad.Persona;
-import com.plataforma.empleo.usuarios.dto.UsuarioRegistroDTO;
 
-public interface UsuarioServicio extends UserDetailsService {
+import jakarta.servlet.http.HttpSession;
 
-	public Persona guardarPersona(UsuarioRegistroDTO registroDTO);
+
+public interface UsuarioServicio {
+
+	Persona crearUsuarioLogin(Persona usuario);
+	
+	boolean validarUsuario(Persona usuario, HttpSession session);
+	
+	Persona buscarUsuarioPorCorreo(String correo);
 	
 	
 }
