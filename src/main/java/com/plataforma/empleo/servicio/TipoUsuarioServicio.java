@@ -9,4 +9,6 @@ public interface TipoUsuarioServicio {
 	
 	public List<TipoUsuario> obtenerTipoUsuarios();
 	
+	public TipoUsuario obtenerPorId(Long id);
+	
 }

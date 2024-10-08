@@ -22,4 +22,10 @@ public class TipoUsuarioServicioImpl implements TipoUsuarioServicio {
 		return tipoUsuarioRepositorio.findAll();
 	}
 
+	@Override
+	public TipoUsuario obtenerPorId(Long id) {
+		
+		return tipoUsuarioRepositorio.findById(id).get();
+	}
+
 }

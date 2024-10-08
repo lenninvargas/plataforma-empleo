@@ -8,7 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.plataforma.empleo.entidad.Empleado;
+import com.plataforma.empleo.entidad.Empleador;
 import com.plataforma.empleo.entidad.Persona;
+import com.plataforma.empleo.entidad.TipoUsuario;
+import com.plataforma.empleo.servicio.EmpleadoServicio;
+import com.plataforma.empleo.servicio.EmpleadorServicio;
 import com.plataforma.empleo.servicio.TipoUsuarioServicio;
 import com.plataforma.empleo.servicio.UsuarioServicio;
 
@@ -23,6 +28,12 @@ public class RegistroPersonaControlador {
 	
 	@Autowired
 	private TipoUsuarioServicio tipoUsuarioServicio;
+	
+	@Autowired
+	private EmpleadoServicio empleadoServicio;
+	
+	@Autowired
+	private EmpleadorServicio empleadorServicio;
 	
 	
 	@GetMapping("/")
@@ -70,10 +81,48 @@ public class RegistroPersonaControlador {
 	}
 	
 	@PostMapping("/registrar")
-	public String crearPersona(@ModelAttribute Persona persona) {
+	public String crearPersona(@ModelAttribute Persona persona, Model model) {
 			
-	
-		usuarioServicio.crearUsuarioLogin(persona);
+		TipoUsuario tipoUsuario = tipoUsuarioServicio.obtenerPorId(persona.getTipoUsuario().getId());
+		
+		if(tipoUsuario.getNombre().equalsIgnoreCase("Empleado")) {
+			
+			Empleado empleado = new Empleado();
+			
+			empleado.setIdPersona(persona.getIdPersona());
+			empleado.setNombre(persona.getNombre());
+			empleado.setApellidos(persona.getApellidos());
+			empleado.setDireccion(persona.getDireccion());
+			empleado.setDni(persona.getDni());
+			empleado.setCelular(persona.getCelular());
+			empleado.setCorreo(persona.getCorreo());
+			empleado.setPassword(persona.getPassword());
+			empleado.setFechaNacimiento(persona.getFechaNacimiento());
+			empleado.setTipoUsuario(persona.getTipoUsuario());
+			
+			empleadoServicio.guardarEmpleado(empleado);
+		
+			
+		}else if(tipoUsuario.getNombre().equalsIgnoreCase("Empleador")) {
+			
+			Empleador empleador = new Empleador();
+			
+			empleador.setIdPersona(persona.getIdPersona());
+			empleador.setNombre(persona.getNombre());
+			empleador.setApellidos(persona.getApellidos());
+			empleador.setDireccion(persona.getDireccion());
+			empleador.setDni(persona.getDni());
+			empleador.setCelular(persona.getCelular());
+			empleador.setCorreo(persona.getCorreo());
+			empleador.setPassword(persona.getPassword());
+			empleador.setFechaNacimiento(persona.getFechaNacimiento());
+			empleador.setTipoUsuario(persona.getTipoUsuario());
+			
+			
+			empleadorServicio.crearEmpleador(empleador);
+			
+			
+		}
 		
 		return "redirect:/";
 		

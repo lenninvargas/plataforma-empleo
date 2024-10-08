@@ -20,7 +20,7 @@ public class PlataformaEmpleoApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		
+
 		TipoUsuario tipoUsuario1 = new TipoUsuario("Empleado");
 		tipoUsuarioRepositorio.save(tipoUsuario1);
 		

@@ -29,32 +29,36 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
 	
 	@Override
-	public Persona crearUsuarioLogin(Persona usuario) {
+	public Persona crearUsuarioLogin(Persona persona) {
 	
-		
-		return usuarioRepositorio.save(usuario);
+		String hashedPassword = Utilitarios.extraerHash(persona.getPassword());
+		persona.setPassword(hashedPassword); 
+		return usuarioRepositorio.save(persona);
 		
 	}
 
 
 	@Override
 	public boolean validarUsuario(Persona usuario, HttpSession session) {
-		
-		Persona personaCorreo = usuarioRepositorio.findBycorreo(usuario.getCorreo());
-			
-			if(personaCorreo == null) {
-				
-				return false;
-			}
-			if(!Utilitarios.verificarContrasenia(personaCorreo.getPassword(), personaCorreo.getPassword())) {
-				
-				return  false;
-			}
-			
-			session.setAttribute("usuario", personaCorreo.getCorreo());
-			
-			return true;
-		}
+	    
+	  
+	    Persona personaCorreo = usuarioRepositorio.findBycorreo(usuario.getCorreo());
+	        
+	   
+	    if(personaCorreo == null) {
+	        return false;
+	    }
+
+	   
+	    if(!Utilitarios.verificarContrasenia(usuario.getPassword(), personaCorreo.getPassword())) {
+	        return false;
+	    }
+	    
+	    
+	    session.setAttribute("usuario", personaCorreo.getCorreo());
+	    
+	    return true;
+	}
 	
 	@Override
 	public Persona buscarUsuarioPorCorreo(String correo) {

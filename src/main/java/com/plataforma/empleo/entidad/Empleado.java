@@ -6,11 +6,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Empleado {
+public class Empleado extends Persona {
 
-
-	@Id
-	private Long id_persona;
 	
 	private Long id_habilidad;
 	
