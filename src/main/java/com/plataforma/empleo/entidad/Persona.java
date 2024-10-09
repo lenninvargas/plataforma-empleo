@@ -10,8 +10,6 @@ import jakarta.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Persona {
 	
-	
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_persona")
@@ -42,6 +40,8 @@ public class Persona {
 	@JoinColumn(name = "id_tipo_usuario")
 	private TipoUsuario tipoUsuario;
 	
+	
+	private String urlPerfil;
 	
 	public Integer getIdPersona() {
 		return idPersona;
@@ -122,9 +122,18 @@ public class Persona {
 	public void setTipoUsuario(TipoUsuario tipoUsuario) {
 		this.tipoUsuario = tipoUsuario;
 	}
+	
+	public String getUrlPerfil() {
+		return urlPerfil;
+	}
 
+	public void setUrlPerfil(String urlPerfil) {
+		this.urlPerfil = urlPerfil;
+	}
+
+	
 	public Persona(Integer idPersona, String nombre, String apellidos, String direccion, String dni, String celular,
-			String correo, String password, LocalDate fechaNacimiento, TipoUsuario tipoUsuario) {
+			String correo, String password, LocalDate fechaNacimiento, TipoUsuario tipoUsuario, String urlPerfil) {
 		super();
 		this.idPersona = idPersona;
 		this.nombre = nombre;
@@ -136,10 +145,11 @@ public class Persona {
 		this.password = password;
 		this.fechaNacimiento = fechaNacimiento;
 		this.tipoUsuario = tipoUsuario;
+		this.urlPerfil = urlPerfil;
 	}
 
 	public Persona(String nombre, String apellidos, String direccion, String dni, String celular, String correo,
-			String password, LocalDate fechaNacimiento, TipoUsuario tipoUsuario) {
+			String password, LocalDate fechaNacimiento, TipoUsuario tipoUsuario,String urlPerfil) {
 		super();
 		this.nombre = nombre;
 		this.apellidos = apellidos;
@@ -150,6 +160,7 @@ public class Persona {
 		this.password = password;
 		this.fechaNacimiento = fechaNacimiento;
 		this.tipoUsuario = tipoUsuario;
+		this.urlPerfil = urlPerfil;
 	}
 
 	public Persona() {

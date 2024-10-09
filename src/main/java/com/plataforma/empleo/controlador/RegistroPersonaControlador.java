@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.plataforma.empleo.entidad.Empleado;
 import com.plataforma.empleo.entidad.Empleador;
@@ -16,6 +18,7 @@ import com.plataforma.empleo.servicio.EmpleadoServicio;
 import com.plataforma.empleo.servicio.EmpleadorServicio;
 import com.plataforma.empleo.servicio.TipoUsuarioServicio;
 import com.plataforma.empleo.servicio.UsuarioServicio;
+import com.plataforma.empleo.utils.Utilitarios;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -81,7 +84,10 @@ public class RegistroPersonaControlador {
 	}
 	
 	@PostMapping("/registrar")
-	public String crearPersona(@ModelAttribute Persona persona, Model model) {
+	public String crearPersona(@ModelAttribute Persona persona, Model model, @RequestParam("foto") MultipartFile foto) {
+		
+		String nombreFoto = Utilitarios.guardarImagen(foto);
+	    persona.setUrlPerfil(nombreFoto);
 			
 		TipoUsuario tipoUsuario = tipoUsuarioServicio.obtenerPorId(persona.getTipoUsuario().getId());
 		
@@ -99,6 +105,7 @@ public class RegistroPersonaControlador {
 			empleado.setPassword(persona.getPassword());
 			empleado.setFechaNacimiento(persona.getFechaNacimiento());
 			empleado.setTipoUsuario(persona.getTipoUsuario());
+			empleado.setUrlPerfil(persona.getUrlPerfil());
 			
 			empleadoServicio.guardarEmpleado(empleado);
 		
@@ -117,7 +124,7 @@ public class RegistroPersonaControlador {
 			empleador.setPassword(persona.getPassword());
 			empleador.setFechaNacimiento(persona.getFechaNacimiento());
 			empleador.setTipoUsuario(persona.getTipoUsuario());
-			
+			empleador.setUrlPerfil(persona.getUrlPerfil());
 			
 			empleadorServicio.crearEmpleador(empleador);
 			
