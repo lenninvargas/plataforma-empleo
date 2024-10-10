@@ -15,26 +15,33 @@
 <body>
 	<div class="container mt-5">
 		<h2>Nuevo Empleo</h2>
-		<form class="row mt-3">
+		<form class="row mt-3" th:action="@{/empleo}" th:object="${empleo}" method="post">
 			<div class="col-6 mb-6">
 				<div class="mb-3">
 				  <label for="titulo" class="form-label">Título</label>
-				  <input type="text" class="form-control" id="titulo">
+				  <input type="text" class="form-control" id="titulo" th:field="*{titulo}">
 				</div>
 				<div class="mb-3">
 				  <label for="descripcion" class="form-label">Descripción</label>
-				  <textarea class="form-control" id="descripcion" rows="3"></textarea>
+				  <textarea class="form-control" id="descripcion" th:field="*{descripcion}" rows="3"></textarea>
 				</div>
-				<select class="form-select" aria-label="Default select example">
+				<!--<select class="form-select" aria-label="Default select example">
 				  <option selected>Habilidad</option>
 				  <option value="1">One</option>
 				  <option value="2">Two</option>
 				  <option value="3">Three</option>
-				</select>
+				</select>-->
+				<select name="habilidad" class="form-select" aria-label="Default select example">
+		            <option th:each="habilidad : ${habilidades}"
+		              th:value="${habilidad.id}" 
+		              th:text="${habilidad.habilidad}"
+		              th:selected="false"
+		              />
+		        </select>
 			</div>
 			<div>
 			<button type="button" class="btn btn-danger mt-4">Cancelar</button>
-			<button type="button" class="btn btn-primary mt-4">Publicar</button>
+			<button type="submit" class="btn btn-primary mt-4">Publicar</button>
 			</div>
 		</form>
 	</div>
