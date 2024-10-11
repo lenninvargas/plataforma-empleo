@@ -5,10 +5,19 @@ import java.util.Date;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "tb_empleo")
-
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Empleo {
 	
 	@Id
@@ -29,61 +38,4 @@ public class Empleo {
 	@Temporal(TemporalType.DATE)
 	private LocalDate fecha;
 	
-
-	public Integer getId_empleo() {
-		return id_empleo;
-	}
-
-	public void setId_empleo(Integer id_empleo) {
-		this.id_empleo = id_empleo;
-	}
-
-	public Empleador getEmpleador() {
-		return empleador;
-	}
-
-	public void setEmpleador(Empleador empleador) {
-		this.empleador = empleador;
-	}
-
-	public Habilidad getHabilidad() {
-		return habilidad;
-	}
-
-	public void setHabilidad(Habilidad habilidad) {
-		this.habilidad = habilidad;
-	}
-
-	public String getTitulo() {
-		return titulo;
-	}
-
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
-
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
-	public LocalDate getFecha() {
-		return fecha;
-	}
-
-	public void setFecha(LocalDate fecha) {
-		this.fecha = fecha;
-	}
-
-
-	@Override
-	public String toString() {
-		return "Empleo [id_empleo=" + id_empleo + ", empleador=" + empleador + ", habilidad=" + habilidad + ", titulo="
-				+ titulo + ", descripcion=" + descripcion + ", fecha=" + fecha + "]";
-	}
-	
-
 }
