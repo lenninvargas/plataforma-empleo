@@ -1,7 +1,6 @@
 package com.plataforma.empleo.entidad;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Id;

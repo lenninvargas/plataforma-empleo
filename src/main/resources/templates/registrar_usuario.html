@@ -70,9 +70,8 @@
 				</div>
 
 				<div class="col-md-6 mb-3">
-					<label for="validationCustom10" class="form-label">Tipo
-						Usuario</label> <select id="validationCustom10" class="form-control"
-						th:field="*{tipoUsuario.id}" required>
+					<label for="validationCustom10" class="form-label">Tipo Usuario</label> 
+					<select id="validationCustom10" class="form-control" th:field="*{tipoUsuario.id}" required>
 						<option th:each="tipoUsuario : ${tipoUsuarios}"
 							th:value="${tipoUsuario.id}" th:text="${tipoUsuario.nombre}">
 						</option>

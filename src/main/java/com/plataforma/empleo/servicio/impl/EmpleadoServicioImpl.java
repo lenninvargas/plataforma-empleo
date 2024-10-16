@@ -1,5 +1,7 @@
 package com.plataforma.empleo.servicio.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +22,11 @@ public class EmpleadoServicioImpl implements EmpleadoServicio {
 
 	@Override
 	public Empleado obtenerIdEmpleado(Long id) {
-		
 		return empleadoRepositorio.findById(id).get();
+	}
+	
+	@Override
+	public List<Empleado> getAll() {
+		return (List<Empleado>)empleadoRepositorio.findAll();
 	}
 }

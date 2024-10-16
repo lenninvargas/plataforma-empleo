@@ -49,12 +49,9 @@ public class RegistroPersonaControlador {
 	
 	@PostMapping("/login")
 	public String loginPost(Persona usuario, Model model, HttpSession session) {
-		
 		boolean usuarioValido = usuarioServicio.validarUsuario(usuario, session);
-		
 		if(usuarioValido) {
-			
-			return "redirect:/menu";
+			return "redirect:/empleos";
 		}
 		
 		model.addAttribute("loginInvalido", "No existe el usuario");
@@ -69,18 +66,13 @@ public class RegistroPersonaControlador {
 		return "redirect:/";
 	}
 	
-	
-	
 	@GetMapping("/registrar")
 	public String mostrarFormularioCrearUsuario(Model model) {
 			
 		model.addAttribute("usuario", new Persona());
-		
 		model.addAttribute("tipoUsuarios", tipoUsuarioServicio.obtenerTipoUsuarios());
 		
-		
 		return "registrar_usuario";
-		
 	}
 	
 	@PostMapping("/registrar")

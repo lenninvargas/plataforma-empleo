@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.plataforma.empleo.modelo.Habilidad;
+import com.plataforma.empleo.entidad.Habilidad;
 import com.plataforma.empleo.repositorio.HabilidadRepository;
 import com.plataforma.empleo.servicio.IHabilidad;
 
