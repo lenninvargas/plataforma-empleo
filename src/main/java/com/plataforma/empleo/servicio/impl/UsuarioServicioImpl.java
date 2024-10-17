@@ -20,15 +20,16 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 	private UsuarioRepositorio usuarioRepositorio;
 
 	@Override
-	public Persona crearUsuarioLogin(Persona persona, MultipartFile foto) {
-
+	public Persona crearUsuarioLogin(Persona usuario, MultipartFile foto) {
+		
 		String nombreFoto = Utilitarios.guardarImagen(foto);
-		persona.setUrlPerfil(nombreFoto);
-
-		String hashedPassword = Utilitarios.extraerHash(persona.getPassword());
-		persona.setPassword(hashedPassword);
-
-		return usuarioRepositorio.save(persona);
+		usuario.setUrlPerfil(nombreFoto);
+		
+		String hashedPassword = Utilitarios.extraerHash(usuario.getPassword());
+		usuario.setPassword(hashedPassword);
+		
+		
+		return usuarioRepositorio.save(usuario);
 
 	}
 
@@ -41,9 +42,9 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 			return false;
 		}
 
-		/*if (!Utilitarios.verificarContrasenia(usuario.getPassword(), personaCorreo.getPassword())) {
+		if (!Utilitarios.verificarContrasenia(usuario.getPassword(), personaCorreo.getPassword())) {
 			return false;
-		}*/
+		}
 
 		session.setAttribute("usuario", personaCorreo.getCorreo());
 

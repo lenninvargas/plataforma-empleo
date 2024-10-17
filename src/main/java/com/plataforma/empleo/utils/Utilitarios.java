@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class Utilitarios {
 
+	
 	public static String guardarImagen(MultipartFile foto) {
 		try {
 			Path pathDire = Paths.get("src/main/resources/static/usuario_foto/");
@@ -28,12 +29,14 @@ public class Utilitarios {
 		}
 	}
 
+
 	public static String extraerHash(String inputpassword) {
 		return BCrypt.hashpw(inputpassword, BCrypt.gensalt());
 	}
 
-	/*public static boolean verificarContrasenia(String inputpassword, String hashPassword) {
+	
+	public static boolean verificarContrasenia(String inputpassword, String hashPassword) {
 		return BCrypt.checkpw(inputpassword, hashPassword);
-	}*/
+	}
 
 }

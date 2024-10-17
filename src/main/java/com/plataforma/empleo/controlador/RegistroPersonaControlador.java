@@ -78,15 +78,17 @@ public class RegistroPersonaControlador {
 	@PostMapping("/registrar")
 	public String crearPersona(@ModelAttribute Persona persona, Model model, @RequestParam("foto") MultipartFile foto) {
 		
-		String nombreFoto = Utilitarios.guardarImagen(foto);
-	    persona.setUrlPerfil(nombreFoto);
+		
 			
 		TipoUsuario tipoUsuario = tipoUsuarioServicio.obtenerPorId(persona.getTipoUsuario().getId());
+		
+		String hashedPassword = Utilitarios.extraerHash(persona.getPassword());
+		
 		
 		if(tipoUsuario.getNombre().equalsIgnoreCase("Empleado")) {
 			
 			Empleado empleado = new Empleado();
-			
+		
 			empleado.setIdPersona(persona.getIdPersona());
 			empleado.setNombre(persona.getNombre());
 			empleado.setApellidos(persona.getApellidos());
@@ -94,11 +96,11 @@ public class RegistroPersonaControlador {
 			empleado.setDni(persona.getDni());
 			empleado.setCelular(persona.getCelular());
 			empleado.setCorreo(persona.getCorreo());
-			empleado.setPassword(persona.getPassword());
+			empleado.setPassword(hashedPassword);
 			empleado.setFechaNacimiento(persona.getFechaNacimiento());
 			empleado.setTipoUsuario(persona.getTipoUsuario());
 			empleado.setUrlPerfil(persona.getUrlPerfil());
-			
+
 			empleadoServicio.guardarEmpleado(empleado);
 		
 			
@@ -113,10 +115,11 @@ public class RegistroPersonaControlador {
 			empleador.setDni(persona.getDni());
 			empleador.setCelular(persona.getCelular());
 			empleador.setCorreo(persona.getCorreo());
-			empleador.setPassword(persona.getPassword());
+			empleador.setPassword(hashedPassword);
 			empleador.setFechaNacimiento(persona.getFechaNacimiento());
 			empleador.setTipoUsuario(persona.getTipoUsuario());
 			empleador.setUrlPerfil(persona.getUrlPerfil());
+			
 			
 			empleadorServicio.crearEmpleador(empleador);
 			
