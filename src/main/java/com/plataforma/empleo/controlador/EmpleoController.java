@@ -30,13 +30,13 @@ public class EmpleoController {
 	private EmpleadorServicio empleadorServicio;
 	
 	@GetMapping("/empleos")
-	public String getAll(Model model) {
+	public String getAll(Model model, HttpSession session) {
 		model.addAttribute("empleos", empleoService.getAll());
 		return "empleos";
 	}
 	
 	@GetMapping("/empleo")
-	public String showCreate(Model model) {
+	public String showCreate(Model model, HttpSession session) {
 		model.addAttribute("empleo", new Empleo());
 		model.addAttribute("habilidades", habilidadService.getAll());
 		return "crearEmpleo";

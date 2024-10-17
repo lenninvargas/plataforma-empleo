@@ -22,10 +22,14 @@ public class EmpleadorServicioImpl implements EmpleadorServicio {
 
 	@Override
 	public Empleador obtenerIdEmpleador(Long id) {
-		
 		return empleadorRepositorio.findById(id).get();
 	}
+<<<<<<< HEAD
 	
+=======
+
+
+>>>>>>> lenDev
 	@Override
 	public Empleador obtenerEmpleadorPorCorreo(String correo) {
 		return empleadorRepositorio.findByCorreo(correo);

@@ -1,7 +1,6 @@
 package com.plataforma.empleo.entidad;
 
 import java.time.LocalDate;
-import java.util.Collection;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

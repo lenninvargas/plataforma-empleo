@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.plataforma.empleo.entidad.TipoUsuario;
 import com.plataforma.empleo.repositorio.TipoUsuarioRepositorio;
+import com.plataforma.empleo.servicio.impl.TipoUsuarioServicioImpl;
 
 @SpringBootApplication
 public class PlataformaEmpleoApplication implements CommandLineRunner {
@@ -17,15 +18,20 @@ public class PlataformaEmpleoApplication implements CommandLineRunner {
 	
 	@Autowired
 	TipoUsuarioRepositorio tipoUsuarioRepositorio;
+	
+	@Autowired
+	private TipoUsuarioServicioImpl tipoUsuServicioImpl;
 
 	@Override
 	public void run(String... args) throws Exception {
 
-		TipoUsuario tipoUsuario1 = new TipoUsuario("Empleado");
-		tipoUsuarioRepositorio.save(tipoUsuario1);
+		if (tipoUsuServicioImpl.obtenerTipoUsuarios().size() < 2) {
+			TipoUsuario tipoUsuario1 = new TipoUsuario("Empleado");
+			tipoUsuarioRepositorio.save(tipoUsuario1);
+			
+			TipoUsuario tipoUsuario2 = new TipoUsuario("Empleador");
+			tipoUsuarioRepositorio.save(tipoUsuario2);
+		}
 		
-		
-		TipoUsuario tipoUsuario2 = new TipoUsuario("Empleador");
-		tipoUsuarioRepositorio.save(tipoUsuario2);
 	}
 }
