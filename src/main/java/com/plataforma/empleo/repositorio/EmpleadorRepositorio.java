@@ -7,5 +7,11 @@ import com.plataforma.empleo.entidad.Empleador;
 
 @Repository
 public interface EmpleadorRepositorio extends JpaRepository<Empleador, Long> {
+<<<<<<< HEAD
 	Empleador findByCorreo(String correo);
+=======
+
+	Empleador findByCorreo(String correo);
+	
+>>>>>>> origin/Alex
 }
