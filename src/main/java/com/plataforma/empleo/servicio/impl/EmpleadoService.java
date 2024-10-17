@@ -6,18 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.plataforma.empleo.entidad.Empleado;
-import com.plataforma.empleo.repositorio.EmpleadoRepository;
+import com.plataforma.empleo.repositorio.EmpleadoRepositorio;
 import com.plataforma.empleo.servicio.IEmpleado;
 
 @Service
 public class EmpleadoService implements IEmpleado{
 	
 	@Autowired
-	private EmpleadoRepository empleadoRepository;
+	private EmpleadoRepositorio empleadoRepositorio;
 
 	@Override
 	public List<Empleado> getAll() {
-		return (List<Empleado>)empleadoRepository.findAll();
+		return (List<Empleado>) empleadoRepositorio.findAll();
 	}
 
 }
