@@ -25,4 +25,9 @@ public class EmpleadorServicioImpl implements EmpleadorServicio {
 		
 		return empleadorRepositorio.findById(id).get();
 	}
+	
+	@Override
+	public Empleador obtenerEmpleadorPorCorreo(String correo) {
+		return empleadorRepositorio.findByCorreo(correo);
+	}
 }

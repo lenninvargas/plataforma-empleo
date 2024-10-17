@@ -8,5 +8,6 @@ public interface EmpleadorServicio {
 	
 	Empleador obtenerIdEmpleador(Long id);
 	
+	Empleador obtenerEmpleadorPorCorreo(String correo);
 	
 }

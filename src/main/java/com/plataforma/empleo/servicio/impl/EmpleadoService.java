@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.plataforma.empleo.modelo.Empleado;
+import com.plataforma.empleo.entidad.Empleado;
 import com.plataforma.empleo.repositorio.EmpleadoRepository;
 import com.plataforma.empleo.servicio.IEmpleado;
 
