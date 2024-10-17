@@ -51,7 +51,7 @@ public class RegistroPersonaControlador {
 	public String loginPost(Persona usuario, Model model, HttpSession session) {
 		boolean usuarioValido = usuarioServicio.validarUsuario(usuario, session);
 		if(usuarioValido) {
-			return "redirect:/empleos"; //REDIGIR
+			return "redirect:/empleos";
 		}
 		
 		model.addAttribute("loginInvalido", "No existe el usuario");
