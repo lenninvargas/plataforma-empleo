@@ -14,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Empleado extends Persona {
+public class Empleado extends Usuario {
 
 	@ManyToOne(targetEntity = Habilidad.class)
 	private Long id_habilidad;

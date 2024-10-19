@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.plataforma.empleo.entidad.Empleado;
 import com.plataforma.empleo.entidad.Empleador;
-import com.plataforma.empleo.entidad.Persona;
+import com.plataforma.empleo.entidad.Usuario;
 import com.plataforma.empleo.entidad.TipoUsuario;
 import com.plataforma.empleo.servicio.EmpleadoServicio;
 import com.plataforma.empleo.servicio.EmpleadorServicio;
@@ -42,20 +42,41 @@ public class RegistroPersonaControlador {
 	@GetMapping("/")
 	public String login(Model model) {
 		
-		model.addAttribute("usuario", new Persona());
+		model.addAttribute("usuario", new Usuario());
+		
+		model.addAttribute("tipoUsuarios", tipoUsuarioServicio.obtenerTipoUsuarios());
 		
 		return "login";
 	}
 	
 	@PostMapping("/login")
-	public String loginPost(Persona usuario, Model model, HttpSession session) {
+	public String loginPost(Usuario usuario, Model model, HttpSession session) {
+		
 		boolean usuarioValido = usuarioServicio.validarUsuario(usuario, session);
+		
+		Usuario usuarioTipo = usuarioServicio.buscarUsuarioPorCorreo(session.getAttribute("usuario").toString());
+		
 		if(usuarioValido) {
-			return "redirect:/empleos";
+			
+			if(usuarioTipo.getTipoUsuario().getNombre().equals("Empleado")) {
+				
+				System.out.println(usuarioTipo.getTipoUsuario().getNombre());
+				return "redirect:/empleos";
+				
+			}else if(usuarioTipo.getTipoUsuario().getNombre().equals("Empleador")) {
+				
+				System.out.println(usuarioTipo.getTipoUsuario().getNombre());
+				
+				return "redirect:/empleo";
+			}
+				
+						
+				//return "redirect:/crearEmpleo";
+			
 		}
 		
 		model.addAttribute("loginInvalido", "No existe el usuario");
-		model.addAttribute("usuario", new Persona());
+		model.addAttribute("usuario", new Usuario());
 		
 		return "login";
 	}
@@ -69,37 +90,40 @@ public class RegistroPersonaControlador {
 	@GetMapping("/registrar")
 	public String mostrarFormularioCrearUsuario(Model model) {
 			
-		model.addAttribute("usuario", new Persona());
+		model.addAttribute("usuario", new Usuario());
+		
 		model.addAttribute("tipoUsuarios", tipoUsuarioServicio.obtenerTipoUsuarios());
 		
 		return "registrar_usuario";
 	}
 	
+	//CHEQUEAR ESTE METODO.
 	@PostMapping("/registrar")
-	public String crearPersona(@ModelAttribute Persona persona, Model model, @RequestParam("foto") MultipartFile foto) {
+	public String crearPersona(@ModelAttribute Usuario usuario, Model model, @RequestParam("foto") MultipartFile foto) {
+	    
+TipoUsuario tipoUsuario = tipoUsuarioServicio.obtenerPorId(usuario.getTipoUsuario().getId());
 		
+		String hashedPassword = Utilitarios.extraerHash(usuario.getPassword());
 		
-			
-		TipoUsuario tipoUsuario = tipoUsuarioServicio.obtenerPorId(persona.getTipoUsuario().getId());
+		String fotoImg = Utilitarios.guardarImagen(foto);
 		
-		String hashedPassword = Utilitarios.extraerHash(persona.getPassword());
 		
 		
 		if(tipoUsuario.getNombre().equalsIgnoreCase("Empleado")) {
 			
 			Empleado empleado = new Empleado();
 		
-			empleado.setIdPersona(persona.getIdPersona());
-			empleado.setNombre(persona.getNombre());
-			empleado.setApellidos(persona.getApellidos());
-			empleado.setDireccion(persona.getDireccion());
-			empleado.setDni(persona.getDni());
-			empleado.setCelular(persona.getCelular());
-			empleado.setCorreo(persona.getCorreo());
+			empleado.setIdPersona(usuario.getIdPersona());
+			empleado.setNombre(usuario.getNombre());
+			empleado.setApellidos(usuario.getApellidos());
+			empleado.setDireccion(usuario.getDireccion());
+			empleado.setDni(usuario.getDni());
+			empleado.setCelular(usuario.getCelular());
+			empleado.setCorreo(usuario.getCorreo());
 			empleado.setPassword(hashedPassword);
-			empleado.setFechaNacimiento(persona.getFechaNacimiento());
-			empleado.setTipoUsuario(persona.getTipoUsuario());
-			empleado.setUrlPerfil(persona.getUrlPerfil());
+			empleado.setFechaNacimiento(usuario.getFechaNacimiento());
+			empleado.setTipoUsuario(usuario.getTipoUsuario());
+			empleado.setUrlPerfil(fotoImg);
 
 			empleadoServicio.guardarEmpleado(empleado);
 		
@@ -108,17 +132,17 @@ public class RegistroPersonaControlador {
 			
 			Empleador empleador = new Empleador();
 			
-			empleador.setIdPersona(persona.getIdPersona());
-			empleador.setNombre(persona.getNombre());
-			empleador.setApellidos(persona.getApellidos());
-			empleador.setDireccion(persona.getDireccion());
-			empleador.setDni(persona.getDni());
-			empleador.setCelular(persona.getCelular());
-			empleador.setCorreo(persona.getCorreo());
+			empleador.setIdPersona(usuario.getIdPersona());
+			empleador.setNombre(usuario.getNombre());
+			empleador.setApellidos(usuario.getApellidos());
+			empleador.setDireccion(usuario.getDireccion());
+			empleador.setDni(usuario.getDni());
+			empleador.setCelular(usuario.getCelular());
+			empleador.setCorreo(usuario.getCorreo());
 			empleador.setPassword(hashedPassword);
-			empleador.setFechaNacimiento(persona.getFechaNacimiento());
-			empleador.setTipoUsuario(persona.getTipoUsuario());
-			empleador.setUrlPerfil(persona.getUrlPerfil());
+			empleador.setFechaNacimiento(usuario.getFechaNacimiento());
+			empleador.setTipoUsuario(usuario.getTipoUsuario());
+			empleador.setUrlPerfil(fotoImg);
 			
 			
 			empleadorServicio.crearEmpleador(empleador);
@@ -127,7 +151,7 @@ public class RegistroPersonaControlador {
 		}
 		
 		return "redirect:/";
-		
 	}
+
 	
 }

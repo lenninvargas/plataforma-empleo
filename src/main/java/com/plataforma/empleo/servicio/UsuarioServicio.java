@@ -4,7 +4,7 @@ package com.plataforma.empleo.servicio;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.plataforma.empleo.entidad.Persona;
+import com.plataforma.empleo.entidad.Usuario;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -12,11 +12,11 @@ import jakarta.servlet.http.HttpSession;
 public interface UsuarioServicio {
 	
 	//Agregando foto prueba 1
-	Persona crearUsuarioLogin(Persona usuario,  MultipartFile foto);
+	Usuario crearUsuarioLogin(Usuario usuario,  MultipartFile foto);
 	
-	boolean validarUsuario(Persona usuario, HttpSession session);
+	boolean validarUsuario(Usuario usuario, HttpSession session);
 	
-	Persona buscarUsuarioPorCorreo(String correo);
+	Usuario buscarUsuarioPorCorreo(String correo);
 	
 	
 }

@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.plataforma.empleo.entidad.Empleador;
 import com.plataforma.empleo.entidad.Empleo;
 import com.plataforma.empleo.servicio.EmpleadorServicio;
-import com.plataforma.empleo.servicio.IEmpleo;
-import com.plataforma.empleo.servicio.IHabilidad;
+import com.plataforma.empleo.servicio.EmpleoServicio;
+import com.plataforma.empleo.servicio.HabilidadServicio;
+
+
 
 import jakarta.servlet.http.HttpSession;
 
@@ -21,13 +23,14 @@ import jakarta.servlet.http.HttpSession;
 public class EmpleoController {
 
 	@Autowired
-	private IEmpleo empleoService;
+	private EmpleoServicio empleoService;
 	
 	@Autowired
-	private IHabilidad habilidadService;
+	private HabilidadServicio habilidadService;
 	
 	@Autowired
 	private EmpleadorServicio empleadorServicio;
+	
 	
 	@GetMapping("/empleos")
 	public String getAll(Model model, HttpSession session) {
@@ -37,8 +40,15 @@ public class EmpleoController {
 	
 	@GetMapping("/empleo")
 	public String showCreate(Model model, HttpSession session) {
+		
+		Empleador empleador = empleadorServicio.obtenerEmpleadorPorCorreo(session.getAttribute("usuario").toString());
+			
 		model.addAttribute("empleo", new Empleo());
+		
 		model.addAttribute("habilidades", habilidadService.getAll());
+		
+		model.addAttribute("foto", empleador.getUrlPerfil());
+		
 		return "crearEmpleo";
 	}
 	

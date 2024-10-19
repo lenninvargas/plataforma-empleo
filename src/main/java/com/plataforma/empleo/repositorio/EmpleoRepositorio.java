@@ -3,9 +3,9 @@ package com.plataforma.empleo.repositorio;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.plataforma.empleo.entidad.Habilidad;
+import com.plataforma.empleo.entidad.Empleo;
 
 @Repository
-public interface HabilidadRepository extends CrudRepository<Habilidad, Integer>{
+public interface EmpleoRepositorio extends CrudRepository<Empleo, Integer>{
 
 }

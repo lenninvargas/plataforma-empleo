@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.plataforma.empleo.entidad.Habilidad;
-import com.plataforma.empleo.repositorio.HabilidadRepository;
-import com.plataforma.empleo.servicio.IHabilidad;
+import com.plataforma.empleo.repositorio.HabilidadRepositorio;
+import com.plataforma.empleo.servicio.HabilidadServicio;
 
 @Service
-public class HabilidadService implements IHabilidad{
+public class HabilidadServicioImpl implements HabilidadServicio{
 
 	@Autowired
-	private HabilidadRepository habilidadRepository;
+	private HabilidadRepositorio habilidadRepository;
 	
 	@Override
 	public List<Habilidad> getAll() {

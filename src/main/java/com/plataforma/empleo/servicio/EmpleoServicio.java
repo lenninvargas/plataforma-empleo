@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.plataforma.empleo.entidad.Empleo;
 
-public interface IEmpleo {
+public interface EmpleoServicio {
 	
 	public List<Empleo> getAll();
 	
