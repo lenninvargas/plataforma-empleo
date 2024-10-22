@@ -78,10 +78,12 @@ public class RegistroPersonaControlador {
 	@PostMapping("/registrar")
 	public String crearPersona(@ModelAttribute Persona persona, Model model, @RequestParam("foto") MultipartFile foto) {
 		
+
 		TipoUsuario tipoUsuario = tipoUsuarioServicio.obtenerPorId(persona.getTipoUsuario().getId());
 		
 		String hashedPassword = Utilitarios.extraerHash(persona.getPassword());
 		String photo = Utilitarios.guardarImagen(foto);
+
 		
 		if(tipoUsuario.getNombre().equalsIgnoreCase("Empleado")) {
 			
@@ -97,7 +99,11 @@ public class RegistroPersonaControlador {
 			empleado.setPassword(hashedPassword);
 			empleado.setFechaNacimiento(persona.getFechaNacimiento());
 			empleado.setTipoUsuario(persona.getTipoUsuario());
+
 			empleado.setUrlPerfil(photo);
+
+			empleado.setUrlPerfil(persona.getUrlPerfil());
+
 
 			empleadoServicio.guardarEmpleado(empleado);
 		
@@ -117,6 +123,7 @@ public class RegistroPersonaControlador {
 			empleador.setFechaNacimiento(persona.getFechaNacimiento());
 			empleador.setTipoUsuario(persona.getTipoUsuario());
 			empleador.setUrlPerfil(photo);
+			
 			
 			
 			empleadorServicio.crearEmpleador(empleador);
