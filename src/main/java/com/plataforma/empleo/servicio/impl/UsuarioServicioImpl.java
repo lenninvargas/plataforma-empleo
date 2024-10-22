@@ -52,4 +52,9 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 	public Usuario buscarUsuarioPorCorreo(String correo) {
 		return usuarioRepositorio.findBycorreo(correo);
 	}
+
+	@Override
+	public Usuario buscarPorId(Long id) {
+		return usuarioRepositorio.findById(id).get();
+	}
 }

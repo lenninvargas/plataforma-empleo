@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +17,7 @@ import com.plataforma.empleo.entidad.Usuario;
 import com.plataforma.empleo.entidad.TipoUsuario;
 import com.plataforma.empleo.servicio.EmpleadoServicio;
 import com.plataforma.empleo.servicio.EmpleadorServicio;
+import com.plataforma.empleo.servicio.HabilidadServicio;
 import com.plataforma.empleo.servicio.TipoUsuarioServicio;
 import com.plataforma.empleo.servicio.UsuarioServicio;
 import com.plataforma.empleo.utils.Utilitarios;
@@ -37,6 +39,9 @@ public class RegistroPersonaControlador {
 	
 	@Autowired
 	private EmpleadorServicio empleadorServicio;
+	
+	@Autowired
+	private HabilidadServicio habilidadServicio;
 	
 	
 	@GetMapping("/")
@@ -69,10 +74,6 @@ public class RegistroPersonaControlador {
 				
 				return "redirect:/empleo";
 			}
-				
-						
-				//return "redirect:/crearEmpleo";
-			
 		}
 		
 		model.addAttribute("loginInvalido", "No existe el usuario");
@@ -88,7 +89,7 @@ public class RegistroPersonaControlador {
 	}
 	
 	@GetMapping("/registrar")
-	public String mostrarFormularioCrearUsuario(Model model) {
+	public String mostrarFormularioCrearUsuario(Model model, MultipartFile foto) {
 			
 		model.addAttribute("usuario", new Usuario());
 		
@@ -101,13 +102,11 @@ public class RegistroPersonaControlador {
 	@PostMapping("/registrar")
 	public String crearPersona(@ModelAttribute Usuario usuario, Model model, @RequestParam("foto") MultipartFile foto) {
 	    
-TipoUsuario tipoUsuario = tipoUsuarioServicio.obtenerPorId(usuario.getTipoUsuario().getId());
+		TipoUsuario tipoUsuario = tipoUsuarioServicio.obtenerPorId(usuario.getTipoUsuario().getId());
 		
 		String hashedPassword = Utilitarios.extraerHash(usuario.getPassword());
 		
 		String fotoImg = Utilitarios.guardarImagen(foto);
-		
-		
 		
 		if(tipoUsuario.getNombre().equalsIgnoreCase("Empleado")) {
 			
@@ -124,9 +123,9 @@ TipoUsuario tipoUsuario = tipoUsuarioServicio.obtenerPorId(usuario.getTipoUsuari
 			empleado.setFechaNacimiento(usuario.getFechaNacimiento());
 			empleado.setTipoUsuario(usuario.getTipoUsuario());
 			empleado.setUrlPerfil(fotoImg);
+			System.out.println("Imagen : " + empleado.getUrlPerfil());
 
 			empleadoServicio.guardarEmpleado(empleado);
-		
 			
 		}else if(tipoUsuario.getNombre().equalsIgnoreCase("Empleador")) {
 			
@@ -139,19 +138,38 @@ TipoUsuario tipoUsuario = tipoUsuarioServicio.obtenerPorId(usuario.getTipoUsuari
 			empleador.setDni(usuario.getDni());
 			empleador.setCelular(usuario.getCelular());
 			empleador.setCorreo(usuario.getCorreo());
-			empleador.setPassword(hashedPassword);
+			empleador.setPassword(hashedPassword);	
 			empleador.setFechaNacimiento(usuario.getFechaNacimiento());
 			empleador.setTipoUsuario(usuario.getTipoUsuario());
 			empleador.setUrlPerfil(fotoImg);
-			
+			System.out.println("Imagen : " + empleador.getUrlPerfil());
 			
 			empleadorServicio.crearEmpleador(empleador);
-			
-			
 		}
 		
 		return "redirect:/";
 	}
-
 	
+	//EDITAR
+	@GetMapping("/edita/{id}r")
+	public String mostrarFormularioEdicion(@PathVariable("id") Long id, Model model, HttpSession session) {
+	  
+		
+	    Usuario usuario = (Usuario) session.getAttribute("usuario");
+	    if (usuario == null) {
+	        return "redirect:/login";
+	    }
+	    
+	    model.addAttribute("usuarioSesion", usuario); 
+	    
+	    
+	    Empleado empleado = empleadoServicio.obtenerIdEmpleado(id);
+	    
+	    if (empleado != null) {
+	        model.addAttribute("empleado", empleado);
+	        return "editar_empleado";
+	    }
+	    
+	    return "error";
+	}	
 }

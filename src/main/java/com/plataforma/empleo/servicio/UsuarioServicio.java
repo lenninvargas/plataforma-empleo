@@ -18,5 +18,6 @@ public interface UsuarioServicio {
 	
 	Usuario buscarUsuarioPorCorreo(String correo);
 	
+	Usuario buscarPorId(Long id);
 	
 }

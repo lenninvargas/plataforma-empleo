@@ -29,4 +29,9 @@ public class EmpleadoServicioImpl implements EmpleadoServicio {
 	public List<Empleado> getAll() {
 		return (List<Empleado>)empleadoRepositorio.findAll();
 	}
+
+	@Override
+	public Empleado obtenerEmpleadoPorCorreo(String correo) {
+		return empleadoRepositorio.findByCorreo(correo);
+	}
 }
