@@ -9,4 +9,6 @@ public interface IEmpleo {
 	public List<Empleo> getAll();
 	
 	public void create(Empleo empleo);
+	
+	public Empleo getById(Integer id);
 }

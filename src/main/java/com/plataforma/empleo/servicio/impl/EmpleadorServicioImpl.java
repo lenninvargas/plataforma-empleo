@@ -19,17 +19,11 @@ public class EmpleadorServicioImpl implements EmpleadorServicio {
 		return empleadorRepositorio.save(crearEmpleador);
 	}
 
-
 	@Override
 	public Empleador obtenerIdEmpleador(Long id) {
 		return empleadorRepositorio.findById(id).get();
 	}
-<<<<<<< HEAD
 
-
-=======
-	
->>>>>>> origin/Alex
 	@Override
 	public Empleador obtenerEmpleadorPorCorreo(String correo) {
 		return empleadorRepositorio.findByCorreo(correo);

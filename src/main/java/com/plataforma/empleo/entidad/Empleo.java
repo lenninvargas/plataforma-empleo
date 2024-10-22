@@ -37,4 +37,6 @@ public class Empleo {
 	@Temporal(TemporalType.DATE)
 	private LocalDate fecha;
 	
+	private String urlFotoDetalle;
+	
 }

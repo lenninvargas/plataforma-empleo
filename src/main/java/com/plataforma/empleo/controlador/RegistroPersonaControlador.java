@@ -51,11 +51,7 @@ public class RegistroPersonaControlador {
 	public String loginPost(Persona usuario, Model model, HttpSession session) {
 		boolean usuarioValido = usuarioServicio.validarUsuario(usuario, session);
 		if(usuarioValido) {
-<<<<<<< HEAD
-			return "redirect:/empleos";
-=======
 			return "redirect:/empleos"; //REDIGIR
->>>>>>> origin/Alex
 		}
 		
 		model.addAttribute("loginInvalido", "No existe el usuario");
@@ -82,12 +78,10 @@ public class RegistroPersonaControlador {
 	@PostMapping("/registrar")
 	public String crearPersona(@ModelAttribute Persona persona, Model model, @RequestParam("foto") MultipartFile foto) {
 		
-		
-			
 		TipoUsuario tipoUsuario = tipoUsuarioServicio.obtenerPorId(persona.getTipoUsuario().getId());
 		
 		String hashedPassword = Utilitarios.extraerHash(persona.getPassword());
-		
+		String photo = Utilitarios.guardarImagen(foto);
 		
 		if(tipoUsuario.getNombre().equalsIgnoreCase("Empleado")) {
 			
@@ -103,7 +97,7 @@ public class RegistroPersonaControlador {
 			empleado.setPassword(hashedPassword);
 			empleado.setFechaNacimiento(persona.getFechaNacimiento());
 			empleado.setTipoUsuario(persona.getTipoUsuario());
-			empleado.setUrlPerfil(persona.getUrlPerfil());
+			empleado.setUrlPerfil(photo);
 
 			empleadoServicio.guardarEmpleado(empleado);
 		
@@ -122,7 +116,7 @@ public class RegistroPersonaControlador {
 			empleador.setPassword(hashedPassword);
 			empleador.setFechaNacimiento(persona.getFechaNacimiento());
 			empleador.setTipoUsuario(persona.getTipoUsuario());
-			empleador.setUrlPerfil(persona.getUrlPerfil());
+			empleador.setUrlPerfil(photo);
 			
 			
 			empleadorServicio.crearEmpleador(empleador);

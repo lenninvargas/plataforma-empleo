@@ -47,7 +47,6 @@ public class Persona {
 	@JoinColumn(name = "id_tipo_usuario")
 	private TipoUsuario tipoUsuario;
 	
-	
 	private String urlPerfil;	
 	
 }
