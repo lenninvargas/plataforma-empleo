@@ -25,4 +25,9 @@ public class EmpleoServicioImpl implements EmpleoServicio{
 		empleoRepository.save(empleo);
 	}
 
+	@Override
+	public Empleo getById(Integer id) {
+		return empleoRepository.findById(id).orElse(null);
+	}
+
 }

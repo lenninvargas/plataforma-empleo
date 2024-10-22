@@ -49,7 +49,6 @@ public class Usuario {
 	@JoinColumn(name = "id_tipo_usuario")
 	private TipoUsuario tipoUsuario;
 	
-	
 	private String urlPerfil;	
 	
 }

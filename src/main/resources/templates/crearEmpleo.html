@@ -33,7 +33,7 @@
 	</nav>
 	<div class="container mt-5">
 		<h2>Nuevo Empleo</h2>
-		<form class="row mt-3" th:action="@{/empleo}" th:object="${empleo}" method="post">
+		<form class="row mt-3" th:action="@{/empleo}" th:object="${empleo}" method="post" enctype="multipart/form-data">
 			<div class="col-6 mb-6">
 				<div class="mb-3">
 				  <label for="titulo" class="form-label">Título</label>
@@ -52,6 +52,11 @@
 						</option>
 					</select>
 				</div>
+				<!-- FOTO -->
+				<div class="form-group">
+                	<label for="exampleFormControlFile1">Detalle del problema</label>
+                	<input name="foto" accept="image/*" required type="file" class="form-control-file" id="exampleFormControlFile1">
+           		 </div>
 			</div>
 			<div>
 			<a class="btn btn-danger mt-4" th:href="@{/empleos}">Cancelar</a>

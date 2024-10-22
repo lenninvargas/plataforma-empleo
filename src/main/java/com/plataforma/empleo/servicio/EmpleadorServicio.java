@@ -7,9 +7,8 @@ public interface EmpleadorServicio {
 	Empleador crearEmpleador(Empleador crearEmpleador);
 	
 	Empleador obtenerIdEmpleador(Long id);
-
-	//QUITAR
-	Empleador obtenerEmpleadorPorCorreo(String correo);
 	
+	Empleador obtenerEmpleadorPorCorreo(String correo);
+
 
 }

@@ -62,6 +62,7 @@ public class RegistroPersonaControlador {
 		Usuario usuarioTipo = usuarioServicio.buscarUsuarioPorCorreo(session.getAttribute("usuario").toString());
 		
 		if(usuarioValido) {
+
 			
 			if(usuarioTipo.getTipoUsuario().getNombre().equals("Empleado")) {
 				
@@ -74,6 +75,9 @@ public class RegistroPersonaControlador {
 				
 				return "redirect:/empleo";
 			}
+
+			return "redirect:/empleos"; //REDIGIR
+
 		}
 		
 		model.addAttribute("loginInvalido", "No existe el usuario");
@@ -104,10 +108,12 @@ public class RegistroPersonaControlador {
 	    
 		TipoUsuario tipoUsuario = tipoUsuarioServicio.obtenerPorId(usuario.getTipoUsuario().getId());
 		
+
 		String hashedPassword = Utilitarios.extraerHash(usuario.getPassword());
 		
 		String fotoImg = Utilitarios.guardarImagen(foto);
-		
+
+
 		if(tipoUsuario.getNombre().equalsIgnoreCase("Empleado")) {
 			
 			Empleado empleado = new Empleado();
@@ -123,7 +129,7 @@ public class RegistroPersonaControlador {
 			empleado.setFechaNacimiento(usuario.getFechaNacimiento());
 			empleado.setTipoUsuario(usuario.getTipoUsuario());
 			empleado.setUrlPerfil(fotoImg);
-			System.out.println("Imagen : " + empleado.getUrlPerfil());
+			
 
 			empleadoServicio.guardarEmpleado(empleado);
 			
@@ -131,6 +137,7 @@ public class RegistroPersonaControlador {
 			
 			Empleador empleador = new Empleador();
 			
+
 			empleador.setIdPersona(usuario.getIdPersona());
 			empleador.setNombre(usuario.getNombre());
 			empleador.setApellidos(usuario.getApellidos());
@@ -142,7 +149,6 @@ public class RegistroPersonaControlador {
 			empleador.setFechaNacimiento(usuario.getFechaNacimiento());
 			empleador.setTipoUsuario(usuario.getTipoUsuario());
 			empleador.setUrlPerfil(fotoImg);
-			System.out.println("Imagen : " + empleador.getUrlPerfil());
 			
 			empleadorServicio.crearEmpleador(empleador);
 		}
