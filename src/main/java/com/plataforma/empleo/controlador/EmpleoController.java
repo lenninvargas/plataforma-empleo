@@ -55,9 +55,9 @@ public class EmpleoController {
 		
 		Empleado empleado = empleadoServicio.obtenerEmpleadoPorCorreo(session.getAttribute("usuario").toString());
 		
+
 		model.addAttribute("empleado", empleado);
 		
-
 		model.addAttribute("habilidades", habilidadService.ListaHabilidades());
 
 		model.addAttribute("empleos", empleoService.getAll());
@@ -71,8 +71,6 @@ public class EmpleoController {
 	public String showCreate(Model model, HttpSession session) {
 		
 		Empleador empleador = empleadorServicio.obtenerEmpleadorPorCorreo(session.getAttribute("usuario").toString());
-		
-		
 			
 		model.addAttribute("empleador", empleador);
 		

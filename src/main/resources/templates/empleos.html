@@ -26,6 +26,7 @@
 		<div class="container-fluid container">
 			<a class="navbar-brand" href="#" style="color: white;"> <i
 				class="bi bi-wrench-adjustable"></i> ServiciosYa!
+				<h4 th:text="'Bienvenido' +  ' ' + ${empleado.nombre} +  ' ' + ${empleado.apellidos}"></h4>
 			</a> <a th:href="@{/editar/{id}(id=${empleado.idPersona})}"> <img
 				th:src="@{'/usuario_foto/' + ${empleado.urlPerfil}}"
 				alt="Foto de perfil" class="profile-pic nav-link">
@@ -58,7 +59,7 @@
 							<form class="col-md-3 mb-3" th:action="@{/empleo}">
 								<h4>Filtros</h4>
 								<label for="exampleFormControlInput1" class="form-label">Habilidades</label>
-								<select class="form-control">
+								<select class="form-control" th:field="*{habilidad}">
 									<option selected>Escoger una opción</option>
 									<option th:each="habilidad : ${habilidades}"
 										th:value="${habilidad.id}" th:text="${habilidad.nombre}">

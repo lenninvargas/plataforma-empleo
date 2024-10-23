@@ -28,4 +28,10 @@ public class EmpleadorServicioImpl implements EmpleadorServicio {
 	public Empleador obtenerEmpleadorPorCorreo(String correo) {
 		return empleadorRepositorio.findByCorreo(correo);
 	}
+
+	@Override
+	public Empleador actualizarEmpleador(Empleador empleadorActualizar) {
+		// TODO Auto-generated method stub
+		return empleadorRepositorio.save(empleadorActualizar);
+	}
 }

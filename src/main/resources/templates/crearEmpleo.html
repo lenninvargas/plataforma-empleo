@@ -27,7 +27,11 @@
 	      <i class="bi bi-wrench-adjustable"></i>
 	      ServiciosYa!
 	    </a>
-	   <img th:src="@{'/usuario_foto/' + ${empleador.urlPerfil}}" alt="Foto de perfil" class="profile-pic nav-link">
+	    <h4 th:text="'Bienvenido' +  ' ' + ${empleador.nombre} +  ' ' + ${empleador.apellidos}"></h4>
+	    <a th:href="@{/editarEmpleador/{id}(id=${empleador.idPersona})}"> <!-- COMENTARIO PARA GUIARME -->
+	  	 <img th:src="@{'/usuario_foto/' + ${empleador.urlPerfil}}" alt="Foto de perfil" class="profile-pic nav-link">
+		</a>
+	     	
 	    <a class="btn btn-outline-danger ml-2" th:href="@{/logout}" role="button">Logout</a>
 	  </div>
 	</nav>

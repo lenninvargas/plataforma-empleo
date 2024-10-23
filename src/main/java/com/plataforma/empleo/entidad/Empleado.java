@@ -1,6 +1,7 @@
 package com.plataforma.empleo.entidad;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,8 @@ import lombok.Setter;
 public class Empleado extends Usuario {
 
 	@ManyToOne(targetEntity = Habilidad.class)
-	private Long id_habilidad;
+	@JoinColumn(name = "id_habilidad")
+	private Habilidad habilidad;
 	
 	private Double calificacion;
 	
