@@ -19,8 +19,9 @@
 <title>Editar Empleado</title>
 </head>
 <body>
+	<div class="container">
 		<h3 class="mt-3">Editar Empleado</h3>
-		<form th:action="@{/}" method="post" th:object="${empleado}"
+		<form th:action="@{/editar/{id}(id=${empleado.idPersona})}" method="post" th:object="${empleado}"
 			enctype="multipart/form-data">
 			<div class="form-row">
 				<!-- CALIFICACION -->
@@ -35,7 +36,7 @@
 				<!-- HABILIDAD -->
 				<div class="col-md-6 mb-3">
 					<label for="validationCustom10" class="form-label">Habilidad</label> 
-					<select id="validationCustom10" class="form-control" th:field="*{habilidad.id}" required>
+					<select id="validationCustom10" class="form-control" required>
 						<option th:each="habilidad : ${habilidades}"
 							th:value="${habilidad.id}" th:text="${habilidad.nombre}">
 						</option>
@@ -55,7 +56,7 @@
 				</div>
 			</div>
 		</form>
-	
+		</div>
 	<script
 		src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
 		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

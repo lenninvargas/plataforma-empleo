@@ -14,5 +14,7 @@ public interface EmpleadoServicio {
 	public List<Empleado> getAll();
 	
 	Empleado obtenerEmpleadoPorCorreo(String correo);
+	
+	Empleado actualizarEmpleado(Empleado empleadoActualizar);
 }
 	

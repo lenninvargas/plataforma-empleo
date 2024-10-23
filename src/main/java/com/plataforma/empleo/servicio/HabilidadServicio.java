@@ -6,5 +6,9 @@ import com.plataforma.empleo.entidad.Habilidad;
 
 public interface HabilidadServicio {
 	
-	public List<Habilidad> getAll();
+	public List<Habilidad> ListaHabilidades();
+	
+	public Habilidad crearHabilidad(Habilidad habilidadNueva);
+	
+
 }

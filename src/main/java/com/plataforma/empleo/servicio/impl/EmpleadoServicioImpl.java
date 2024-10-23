@@ -34,4 +34,9 @@ public class EmpleadoServicioImpl implements EmpleadoServicio {
 	public Empleado obtenerEmpleadoPorCorreo(String correo) {
 		return empleadoRepositorio.findByCorreo(correo);
 	}
+
+	@Override
+	public Empleado actualizarEmpleado(Empleado empleadoActualizar) {
+		return empleadoRepositorio.save(empleadoActualizar);
+	}
 }

@@ -16,8 +16,16 @@ public class HabilidadServicioImpl implements HabilidadServicio{
 	private HabilidadRepositorio habilidadRepository;
 	
 	@Override
-	public List<Habilidad> getAll() {
+	public List<Habilidad> ListaHabilidades() {
 		return (List<Habilidad>)habilidadRepository.findAll();
 	}
+
+	@Override
+	public Habilidad crearHabilidad(Habilidad habilidadNueva) {
+		
+		return habilidadRepository.save(habilidadNueva);
+	}
+
+	
 
 }

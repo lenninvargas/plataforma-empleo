@@ -58,7 +58,7 @@ public class EmpleoController {
 		model.addAttribute("empleado", empleado);
 		
 
-		model.addAttribute("habilidades", habilidadService.getAll());
+		model.addAttribute("habilidades", habilidadService.ListaHabilidades());
 
 		model.addAttribute("empleos", empleoService.getAll());
 		
@@ -79,7 +79,7 @@ public class EmpleoController {
 		
 		model.addAttribute("empleo", new Empleo());
 		
-		model.addAttribute("habilidades", habilidadService.getAll());
+		model.addAttribute("habilidades", habilidadService.ListaHabilidades());
 		
 	
 		

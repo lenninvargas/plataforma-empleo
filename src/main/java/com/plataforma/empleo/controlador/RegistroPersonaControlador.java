@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.plataforma.empleo.entidad.Empleado;
 import com.plataforma.empleo.entidad.Empleador;
+import com.plataforma.empleo.entidad.Habilidad;
 import com.plataforma.empleo.entidad.Usuario;
 import com.plataforma.empleo.entidad.TipoUsuario;
 import com.plataforma.empleo.servicio.EmpleadoServicio;
@@ -156,19 +157,22 @@ public class RegistroPersonaControlador {
 		return "redirect:/";
 	}
 	
-	//EDITAR
-	@GetMapping("/edita/{id}r")
+	//EDITAR GET
+	@GetMapping("/editar/{id}")
 	public String mostrarFormularioEdicion(@PathVariable("id") Long id, Model model, HttpSession session) {
 	  
 		
-	    Usuario usuario = (Usuario) session.getAttribute("usuario");
-	    if (usuario == null) {
-	        return "redirect:/login";
-	    }
-	    
-	    model.addAttribute("usuarioSesion", usuario); 
-	    
-	    
+		//MODEL
+		model.addAttribute("habilidades", habilidadServicio.ListaHabilidades());
+		
+		Usuario sessionUsuario = usuarioServicio.buscarUsuarioPorCorreo(session.getAttribute("usuario").toString());
+		
+		if(sessionUsuario == null) {
+			
+			return "redirect:/";
+			
+		}
+		
 	    Empleado empleado = empleadoServicio.obtenerIdEmpleado(id);
 	    
 	    if (empleado != null) {
@@ -178,4 +182,33 @@ public class RegistroPersonaControlador {
 	    
 	    return "error";
 	}	
+	
+	//EDITAR POST
+	@PostMapping("/editar/{id}")
+	public String actualizarUsuario(@PathVariable("id") Long id, @ModelAttribute Empleado empleado, HttpSession session, MultipartFile foto) {
+		
+		
+		
+		Usuario sessionUsuario = usuarioServicio.buscarUsuarioPorCorreo(session.getAttribute("usuario").toString());
+		
+		if(sessionUsuario == null) {
+						
+			return "redirect:/";
+						
+		}
+		
+		String fotoImgActualizar = Utilitarios.guardarImagen(foto);
+		
+		
+		Empleado empleadoExistente = empleadoServicio.obtenerIdEmpleado(id);
+		empleadoExistente.setCalificacion(empleado.getCalificacion());
+		empleadoExistente.setId_habilidad(empleado.getId_habilidad());
+		empleadoExistente.setUrlPerfil(fotoImgActualizar);
+		
+		empleadoServicio.actualizarEmpleado(empleadoExistente);
+		
+	
+		return "redirect:/empleos";
+		
+	}
 }
