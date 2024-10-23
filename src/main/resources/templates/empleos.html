@@ -26,42 +26,62 @@
 		<div class="container">
 			<a class="navbar-brand" href="#" style="color: white;"> <i
 				class="bi bi-wrench-adjustable"></i> ServiciosYa!
-			</a>
-
-			<div class="d-flex align-items-center">
-				<h6 style="color: white" class="me-2"
-					th:text="${empleado.nombre} +  ' ' + ${empleado.apellidos}"></h6>
-				<a class="me-3"
-					th:href="@{/editar/{id}(id=${empleado.idPersona})}">
-
-					<img th:src="@{'/usuario_foto/' + ${empleado.urlPerfil}}"
+			</a> 
+			
+			<div class= "d-flex align-items-center">
+				<h6 style="color: white" class="me-2" th:text="${empleado.nombre} +  ' ' + ${empleado.apellidos}"></h6>
+				
+				<a class="me-3" th:href="@{/editar/{id}(id=${empleado.idPersona})}"> <img
+					th:src="@{'/usuario_foto/' + ${empleado.urlPerfil}}"
 					alt="Foto de perfil" class="profile-pic nav-link">
-				</a> <a class="btn btn-outline-danger ml-2" th:href="@{/logout}"
-					role="button">Logout</a>
+				</a>
+				
+				<a class="btn btn-outline-danger ml-2" th:href="@{/logout}"
+				role="button">Logout</a>
 			</div>
+
 		</div>
 	</nav>
-
 	<div class="container-sm mt-3">
-		<h2>Empleos</h2>
+		<h2>Ofertas de Empleo</h2>
+		<hr>
 
-		<div class="row mt-3">
-			<div class="col-10 mb-6" th:each="empleo : ${empleos}">
-				<div
-					class="card border-dark mb-4 shadow mb-5 bg-body-tertiary rounded "
-					style="width: 48rem;">
-					<div class="card-header text-bg-dark"
-						th:text="|${empleo.empleador.nombre} ${empleo.empleador.apellidos}|"></div>
-					<div class="card-body">
+		<div class="d-flex justify-content-around">
 
-						<hr>
+			<form
+				class="col-md-3 mb-3 border shadow-sm p-3 mb-5 bg-body-tertiary rounded"
+				th:action="@{/empleo}" style="height: 230px">
+				<h4>Filtros</h4>
+				<label for="exampleFormControlInput1" class="form-label">Habilidades</label>
+				<select class="form-control">
+					<option selected>Escoger una opción</option>
+					<option th:each="habilidad : ${habilidades}"
+						th:value="${habilidad.id}" th:text="${habilidad.nombre}">
+					</option>
+				</select>
+				<button class="btn btn-secondary mt-4" th:href="@{/empleo}">Buscar</button>
+			</form>
+
+			<!-- Lista de Empleos -->
+			<div class="col-9 row">
+				<div class="card mb-4 shadow mb-5 bg-body-tertiary rounded p-0 ms-4"
+					style="height: 520px;width: 450px" th:each="empleo: ${empleos}">
+
+
+					<!-- Imagen del empleo -->
+					<div
+						style="background-color: #224064; color: white; height: 450px; object-fit: cover; overflow: hidden;"
+						class="card-header p-0">
+						<img class="border-dark shadow bg-body-tertiary rounded" alt="img"
+							th:src="@{'/usuario_foto/' + ${empleo.urlFotoDetalle}}"
+							height="100%" width="100%" style="object-fit: cover;">
 
 						<div class="d-flex justify-content-around">
 
 							<form class="col-md-3 mb-3" th:action="@{/empleo}">
 								<h4>Filtros</h4>
 								<label for="exampleFormControlInput1" class="form-label">Habilidades</label>
-								<select class="form-control" th:field="*{habilidad}">
+								<select class="form-control">
 									<option selected>Escoger una opción</option>
 									<option th:each="habilidad : ${habilidades}"
 										th:value="${habilidad.id}" th:text="${habilidad.nombre}">
@@ -101,14 +121,33 @@
 									<p class="card-text" th:text="${empleo.descripcion}"></p>
 									<div class="d-flex justify-content-center"></div>
 								</div>
+
 							</div>
 						</div>
+
 					</div>
+
+					<!-- Contenido del empleo -->
+					<div class="card-body">
+						<div class="d-flex justify-content-between">
+
+							<h5 class="card-title" th:text="${empleo.titulo}"></h5>
+							<button class="btn btn-primary">Postular</button>
+						</div>
+						<div>
+							<small class="text-body-secondary">Fecha de publicación:</small>
+							<small class="text-body-secondary" th:text="${empleo.fecha}"></small><br>
+							<small class="text-body-secondary">Habilidad:</small> <small
+								class="text-body-secondary" th:text="${empleo.habilidad.nombre}"></small>
+						</div>
+						<p class="card-text" th:text="${empleo.descripcion}"></p>
+						<div class="d-flex justify-content-center"></div>
+					</div>
+
 				</div>
 			</div>
 		</div>
 	</div>
-
 	<script th:src="@{Js/Empleo.js}"></script>
 	<!-- Bootstrap JS -->
 	<script

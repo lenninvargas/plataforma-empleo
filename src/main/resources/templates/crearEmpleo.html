@@ -3,80 +3,123 @@
 <head>
 <!-- Bootstrap -->
 <link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
 	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
 	crossorigin="anonymous">
 
 <!-- Bootstrap Icon-->
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-	
-	<style>
-        .profile-pic {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        </style>
+
+<style>
+.profile-pic {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+</style>
 </head>
 <body>
+
 	<nav class="navbar" style="background-color: #224064">
-        <div class="container">
-            <a class="navbar-brand" href="#" style="color: white;"> <i
-                class="bi bi-wrench-adjustable"></i> ServiciosYa!
-            </a>
+		<div class="container">
+			<a class="navbar-brand" href="#" style="color: white;"> <i
+				class="bi bi-wrench-adjustable"></i> ServiciosYa!
+			</a>
+			
+			<div class= "d-flex align-items-center">	
+			<h6 style="color: white" class="me-2" th:text="${empleador.nombre} +  ' ' + ${empleador.apellidos}"></h6>
+				<a class="me-3" th:href="@{/editarEmpleador/{id}(id=${empleador.idPersona})}">
+				
+				<img th:src="@{'/usuario_foto/' + ${empleador.urlPerfil}}"
+					alt="Foto de perfil" class="profile-pic nav-link">
+				</a>
+				
+				<a class="btn btn-outline-danger ml-2" th:href="@{/logout}"
+				role="button">Logout</a> 
+			</div>
+			
+			
+		</div>
 
-            <div class= "d-flex align-items-center">
-            <h6 style="color: white" class="me-2" th:text="${empleador.nombre} +  ' ' + ${empleador.apellidos}"></h6>
-                <a class="me-3" th:href="@{/editarEmpleador/{id}(id=${empleador.idPersona})}">
+	</nav>
+	<div class="container-sm mt-4">
+		<h3>Solicita tu servicio</h3>
+		<hr>
 
-                <img th:src="@{'/usuario_foto/' + ${empleador.urlPerfil}}"
-                    alt="Foto de perfil" class="profile-pic nav-link">
-                </a>
-
-                <a class="btn btn-outline-danger ml-2" th:href="@{/logout}"
-                role="button">Logout</a> 
-            </div>
-
-
-        </div>
-
-    </nav>
-	<div class="container mt-5">
-		<h2>Nuevo Empleo</h2>
-		<form class="row mt-3" th:action="@{/empleo}" th:object="${empleo}" method="post" enctype="multipart/form-data">
-			<div class="col-6 mb-6">
+		<div class="d-flex justify-content-around" style="height: 100%">
+			<!-- Formulario Crear Empleo -->
+			<form
+				class="col-md-4 border shadow-sm p-3 mb-5 bg-body-tertiary rounded"
+				th:action="@{/empleo}" method="post" enctype="multipart/form-data"
+				th:object="${empleo}" style="height: 550px">
+				<h5>Crear Empleo</h5>
 				<div class="mb-3">
-				  <label for="titulo" class="form-label">Título</label>
-				  <input type="text" class="form-control" id="titulo" th:field="*{titulo}">
+					<label for="titulo" class="form-label">Título</label> <input
+						type="text" class="form-control" id="titulo" th:field="*{titulo}">
 				</div>
 				<div class="mb-3">
-				  <label for="descripcion" class="form-label">Descripción</label>
-				  <textarea class="form-control" id="descripcion" th:field="*{descripcion}" rows="3"></textarea>
+					<label for="descripcion" class="form-label">Descripción</label>
+					<textarea class="form-control" id="descripcion" rows="3"
+						th:field="*{descripcion}"></textarea>
 				</div>
-		        <div class="col-md-6 mb-3">
-					<label for="validationCustom10" class="form-label">Habilidades</label> 
-					<select id="validationCustom10" class="form-control" required th:field="*{habilidad}">
+				<div class="mb-3">
+					<label for="validationCustom10" class="form-label">Habilidades</label>
+					<select id="validationCustom10" class="form-control" required
+						th:field="*{habilidad.id}">
 						<option th:each="habilidad : ${habilidades}"
-							th:value="${habilidad.id}"  
-							th:text="${habilidad.nombre}">
+							th:value="${habilidad.id}" th:text="${habilidad.nombre}">
 						</option>
 					</select>
 				</div>
-				<!-- FOTO -->
-				<div class="form-group">
-                	<label for="exampleFormControlFile1">Detalle del problema</label>
-                	<input name="foto" accept="image/*" required type="file" class="form-control-file" id="exampleFormControlFile1">
-           		 </div>
+				<div class="mb-3">
+					<label for="formFile" class="form-label">Foto del problema</label><br>
+					<input name="foto" class="form-control" type="file" id="formFile">
+				</div>
+
+				<button type="submit" class="btn btn-primary mt-4"
+					style="width: 100%">Publicar</button>
+			</form>
+
+			<!-- Lista de Empleos -->
+			<div class="col-8 row">
+				<p class="ms-4">Empleos que publicaste:</p>
+				<div
+					class="col-5 card mb-4 shadow mb-5 bg-body-tertiary rounded p-0 ms-5 mt-2"
+					style="height: 500px; width: 380px" th:each="empleo: ${empleos}">
+
+					<!-- Imagen del empleo -->
+					<div
+						style="background-color: #224064; color: white; height: 450px; object-fit: cover; overflow: hidden;"
+						class="card-header p-0">
+						<img class="border-dark shadow bg-body-tertiary rounded" alt="img"
+							th:src="@{'/usuario_foto/' + ${empleo.urlFotoDetalle}}"
+							height="100%" width="100%" style="object-fit: cover;">
+					</div>
+
+					<!-- Contenido del empleo -->
+					<div class="card-body">
+						<div class="d-flex justify-content-between">
+							<h6 class="card-title" th:text="${empleo.titulo}"></h6>
+						</div>
+						<div>
+							<small class="text-body-secondary">Fecha de publicación:</small>
+							<small class="text-body-secondary" th:text="${empleo.fecha}"></small><br>
+							<small class="text-body-secondary">Habilidad:</small> <small
+								class="text-body-secondary" th:text="${empleo.habilidad.nombre}"></small>
+						</div>
+						<p class="card-text" th:text="${empleo.descripcion}"></p>
+						<div class="d-flex justify-content-center"></div>
+					</div>
+
+				</div>
 			</div>
-			<div>
-			<a class="btn btn-danger mt-4" th:href="@{/empleos}">Cancelar</a>
-			<button type="submit" class="btn btn-primary mt-4">Publicar</button>
-			</div>
-		</form>
+		</div>
 	</div>
 
+	<script th:src="@{Js/Empleo.js}"></script>
 	<!-- Bootstrap JS -->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.plataforma.empleo.entidad.Empleado;
 import com.plataforma.empleo.entidad.Empleador;
-import com.plataforma.empleo.entidad.Habilidad;
 import com.plataforma.empleo.entidad.Usuario;
 import com.plataforma.empleo.entidad.TipoUsuario;
 import com.plataforma.empleo.servicio.EmpleadoServicio;
@@ -64,20 +63,14 @@ public class RegistroPersonaControlador {
 		
 		if(usuarioValido) {
 
-			
 			if(usuarioTipo.getTipoUsuario().getNombre().equals("Empleado")) {
-				
 				System.out.println(usuarioTipo.getTipoUsuario().getNombre());
 				return "redirect:/empleos";
 				
 			}else if(usuarioTipo.getTipoUsuario().getNombre().equals("Empleador")) {
-				
 				System.out.println(usuarioTipo.getTipoUsuario().getNombre());
-				
-				return "redirect:/empleo";
+				return "redirect:/crearEmpleo";
 			}
-
-			return "redirect:/empleos"; //REDIGIR
 
 		}
 		
