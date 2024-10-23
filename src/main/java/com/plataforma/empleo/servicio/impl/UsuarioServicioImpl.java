@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.plataforma.empleo.entidad.Persona;
+import com.plataforma.empleo.entidad.Usuario;
 
 import com.plataforma.empleo.repositorio.UsuarioRepositorio;
 import com.plataforma.empleo.servicio.UsuarioServicio;
@@ -20,39 +20,41 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 	private UsuarioRepositorio usuarioRepositorio;
 
 	@Override
-	public Persona crearUsuarioLogin(Persona usuario, MultipartFile foto) {
+	public Usuario crearUsuarioLogin(Usuario usuario, MultipartFile foto) {
 		
-		String nombreFoto = Utilitarios.guardarImagen(foto);
-		usuario.setUrlPerfil(nombreFoto);
-		
-		String hashedPassword = Utilitarios.extraerHash(usuario.getPassword());
-		usuario.setPassword(hashedPassword);
-		
+		String imgFoto = Utilitarios.guardarImagen(foto);
+		usuario.setUrlPerfil(imgFoto);
 		
 		return usuarioRepositorio.save(usuario);
+	
 
 	}
 
 	@Override
-	public boolean validarUsuario(Persona usuario, HttpSession session) {
+	public boolean validarUsuario(Usuario usuario, HttpSession session) {
 
-		Persona personaCorreo = usuarioRepositorio.findBycorreo(usuario.getCorreo());
+		Usuario usuarioCorreo = usuarioRepositorio.findBycorreo(usuario.getCorreo());
 
-		if (personaCorreo == null) {
+		if (usuarioCorreo == null) {
 			return false;
 		}
 
-		if (!Utilitarios.verificarContrasenia(usuario.getPassword(), personaCorreo.getPassword())) {
+		if (!Utilitarios.verificarContrasenia(usuario.getPassword(), usuarioCorreo.getPassword())) {
 			return false;
 		}
-
-		session.setAttribute("usuario", personaCorreo.getCorreo());
-
+		
+		//VALIDACION EXITOSA!!!
+		session.setAttribute("usuario", usuario.getCorreo());
 		return true;
 	}
 
 	@Override
-	public Persona buscarUsuarioPorCorreo(String correo) {
+	public Usuario buscarUsuarioPorCorreo(String correo) {
 		return usuarioRepositorio.findBycorreo(correo);
+	}
+
+	@Override
+	public Usuario buscarPorId(Long id) {
+		return usuarioRepositorio.findById(id).get();
 	}
 }

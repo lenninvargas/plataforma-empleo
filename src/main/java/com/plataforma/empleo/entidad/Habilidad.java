@@ -23,11 +23,16 @@ public class Habilidad {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
 	
 	private String nombre;
 	
 	@OneToMany(mappedBy = "id_habilidad", targetEntity = Empleado.class)
 	private List<Empleado> empleados;
+
+	public Habilidad(String nombre) {
+		super();
+		this.nombre = nombre;
+	}
 }
 

@@ -8,5 +8,5 @@ import com.plataforma.empleo.entidad.Empleado;
 @Repository
 public interface EmpleadoRepositorio extends JpaRepository<Empleado, Long> {
 	
-
+	Empleado findByCorreo(String correo);
 }

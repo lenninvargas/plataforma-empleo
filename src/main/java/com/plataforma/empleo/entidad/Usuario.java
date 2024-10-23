@@ -3,24 +3,25 @@ package com.plataforma.empleo.entidad;
 import java.time.LocalDate;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_persona")
+@Table(name = "tb_usuario")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Persona {
+public class Usuario {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_persona")
-	private Integer idPersona;
+	private Long idPersona;
 	
 	private String nombre;
 	
@@ -34,7 +35,8 @@ public class Persona {
 	@Column(length = 9)
 	private String celular;
 	
-
+	@Email
+	@Column(unique = true)
 	private String correo;
 	
 

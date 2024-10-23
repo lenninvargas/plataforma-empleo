@@ -32,6 +32,7 @@ public class Empleo {
 	private Habilidad habilidad;
 	
 	private String titulo;
+	
 	private String descripcion;
 
 	@Temporal(TemporalType.DATE)

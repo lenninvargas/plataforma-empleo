@@ -8,14 +8,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+
 import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.multipart.MultipartFile;
 
+import com.plataforma.empleo.entidad.Empleado;
 import com.plataforma.empleo.entidad.Empleador;
 import com.plataforma.empleo.entidad.Empleo;
+
+import com.plataforma.empleo.servicio.EmpleadoServicio;
 import com.plataforma.empleo.servicio.EmpleadorServicio;
-import com.plataforma.empleo.servicio.IEmpleo;
-import com.plataforma.empleo.servicio.IHabilidad;
+
+import com.plataforma.empleo.servicio.EmpleoServicio;
+import com.plataforma.empleo.servicio.HabilidadServicio;
+
 import com.plataforma.empleo.utils.Utilitarios;
 
 import jakarta.servlet.http.HttpSession;
@@ -24,27 +32,40 @@ import jakarta.servlet.http.HttpSession;
 public class EmpleoController {
 
 	@Autowired
-	private IEmpleo empleoService;
-
+	private EmpleoServicio empleoService;
+	
 	@Autowired
-	private IHabilidad habilidadService;
-
+	private HabilidadServicio habilidadService;
+	
 	@Autowired
 	private EmpleadorServicio empleadorServicio;
-
-	// Lista empleos para el Trabajador
+	
+	@Autowired
+	private EmpleadoServicio empleadoServicio;
+	
+	//TIPO DE USUARIO 1 -> EMPLEADO
 	@GetMapping("/empleos")
-	public String getAllEmpleosTrabajador(Model model, HttpSession session) {
-		model.addAttribute("habilidades", habilidadService.getAll());
-		model.addAttribute("empleos", empleoService.getAll());
+	public String getAll(Model model, HttpSession session) {
+
+		Empleado empleado = empleadoServicio.obtenerEmpleadoPorCorreo(session.getAttribute("usuario").toString());
+		
+		model.addAttribute("empleado", empleado);
+		model.addAttribute("habilidades", habilidadService.ListaHabilidades());
+		model.addAttribute("empleos", empleoService.getAll());	
 		return "empleos";
 	}
-
-	// Lista empleos para el Empleador
+	
+	//TIPO DE USUARIO 2 -> EMPLEADOR
 	@GetMapping("/crearEmpleo")
-	public String getAllEmpleosEmpleador(Model model, HttpSession session) {
-		model.addAttribute("habilidades", habilidadService.getAll());
-		model.addAttribute("empleos", empleoService.getAll());
+	public String showCreate(Model model, HttpSession session) {
+		
+		Empleador empleador = empleadorServicio.obtenerEmpleadorPorCorreo(session.getAttribute("usuario").toString());
+		
+		model.addAttribute("empleador", empleador);	
+		model.addAttribute("empleos", empleoService.getAll());	
+		model.addAttribute("empleo", new Empleo());
+		model.addAttribute("habilidades", habilidadService.ListaHabilidades());
+
 		return "crearEmpleo";
 	}
 
@@ -57,8 +78,7 @@ public class EmpleoController {
 		empleo.setEmpleador(empleador);
 		empleo.setFecha(fechaActual);
 		empleo.setUrlFotoDetalle(photo);
-
 		empleoService.create(empleo);
-		return "redirect:/empleos";
+		return "redirect:/crearEmpleo";
 	}
 }
