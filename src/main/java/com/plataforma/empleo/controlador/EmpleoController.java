@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,27 +25,29 @@ public class EmpleoController {
 
 	@Autowired
 	private IEmpleo empleoService;
-	
+
 	@Autowired
 	private IHabilidad habilidadService;
-	
+
 	@Autowired
 	private EmpleadorServicio empleadorServicio;
-	
+
+	// Lista empleos para el Trabajador
 	@GetMapping("/empleos")
-	public String getAll(Model model, HttpSession session) {
+	public String getAllEmpleosTrabajador(Model model, HttpSession session) {
 		model.addAttribute("habilidades", habilidadService.getAll());
 		model.addAttribute("empleos", empleoService.getAll());
 		return "empleos";
 	}
-	
-	@GetMapping("/empleo")
-	public String showCreate(Model model, HttpSession session) {
-		model.addAttribute("empleo", new Empleo());
+
+	// Lista empleos para el Empleador
+	@GetMapping("/crearEmpleo")
+	public String getAllEmpleosEmpleador(Model model, HttpSession session) {
 		model.addAttribute("habilidades", habilidadService.getAll());
+		model.addAttribute("empleos", empleoService.getAll());
 		return "crearEmpleo";
 	}
-	
+
 	@PostMapping("/empleo")
 	public String create(@ModelAttribute Empleo empleo, HttpSession session, @RequestParam("foto") MultipartFile foto) {
 		String photo = Utilitarios.guardarImagen(foto);
@@ -56,7 +57,7 @@ public class EmpleoController {
 		empleo.setEmpleador(empleador);
 		empleo.setFecha(fechaActual);
 		empleo.setUrlFotoDetalle(photo);
-		
+
 		empleoService.create(empleo);
 		return "redirect:/empleos";
 	}
