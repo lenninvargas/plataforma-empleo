@@ -10,5 +10,6 @@ public interface EmpleadorServicio {
 	
 	Empleador obtenerEmpleadorPorCorreo(String correo);
 
+	Empleador actualizarEmpleador(Empleador empleadorActualizar);
 
 }

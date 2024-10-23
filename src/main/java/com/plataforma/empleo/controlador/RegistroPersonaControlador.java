@@ -150,9 +150,9 @@ public class RegistroPersonaControlador {
 		return "redirect:/";
 	}
 	
-	//EDITAR GET
+	//EDITAR GET EMPLEADO
 	@GetMapping("/editar/{id}")
-	public String mostrarFormularioEdicion(@PathVariable("id") Long id, Model model, HttpSession session) {
+	public String mostrarFormularioEdicionEmpleado(@PathVariable("id") Long id, Model model, HttpSession session) {
 	  
 		
 		//MODEL
@@ -165,6 +165,7 @@ public class RegistroPersonaControlador {
 			return "redirect:/";
 			
 		}
+	
 		
 	    Empleado empleado = empleadoServicio.obtenerIdEmpleado(id);
 	    
@@ -176,9 +177,9 @@ public class RegistroPersonaControlador {
 	    return "error";
 	}	
 	
-	//EDITAR POST
+	//EDITAR POST EMPLEADO
 	@PostMapping("/editar/{id}")
-	public String actualizarUsuario(@PathVariable("id") Long id, @ModelAttribute Empleado empleado, HttpSession session, MultipartFile foto) {
+	public String actualizarEmpleado(@PathVariable("id") Long id, @ModelAttribute Empleado empleado, HttpSession session, MultipartFile foto) {
 		
 		
 		
@@ -193,15 +194,82 @@ public class RegistroPersonaControlador {
 		String fotoImgActualizar = Utilitarios.guardarImagen(foto);
 		
 		
+		
 		Empleado empleadoExistente = empleadoServicio.obtenerIdEmpleado(id);
-		empleadoExistente.setCalificacion(empleado.getCalificacion());
-		empleadoExistente.setId_habilidad(empleado.getId_habilidad());
-		empleadoExistente.setUrlPerfil(fotoImgActualizar);
 		
-		empleadoServicio.actualizarEmpleado(empleadoExistente);
 		
-	
+		if(empleadoExistente != null ) {
+			
+			empleadoExistente.setCalificacion(empleado.getCalificacion());
+			empleadoExistente.setHabilidad(empleado.getHabilidad());
+			System.out.println("Id de Habilidad : " + empleado.getHabilidad());
+			empleadoExistente.setUrlPerfil(fotoImgActualizar);
+			
+			empleadoServicio.actualizarEmpleado(empleadoExistente);
+				
+		} 
+		
+		
 		return "redirect:/empleos";
 		
 	}
+	
+	//EDITAR GET EMPLEADOR
+		@GetMapping("/editarEmpleador/{id}")
+		public String mostrarFormularioEdicion(@PathVariable("id") Long id, Model model, HttpSession session) {
+		 
+			Usuario sessionUsuario = usuarioServicio.buscarUsuarioPorCorreo(session.getAttribute("usuario").toString());
+			
+			if(sessionUsuario == null) {
+				
+				return "redirect:/";
+				
+			}
+			
+			Empleador empleador = empleadorServicio.obtenerIdEmpleador(id);
+			
+		   
+		    
+		    if (empleador != null) {
+		    	model.addAttribute("empleador", empleador);
+		    	return "editar_empleador";
+		    }
+		  
+		    return "error";
+		}	
+		
+		//EDITAR POST EMPLEADOR
+		@PostMapping("/editarEmpleador/{id}")
+		public String actualizarEmpleador(@PathVariable("id") Long id, @ModelAttribute Empleador empleador, HttpSession session, MultipartFile foto) {
+			
+			
+			
+			Usuario sessionUsuario = usuarioServicio.buscarUsuarioPorCorreo(session.getAttribute("usuario").toString());
+			
+			if(sessionUsuario == null) {
+							
+				return "redirect:/";
+							
+			}
+			
+			String fotoImgActualizar = Utilitarios.guardarImagen(foto);
+			
+			
+		
+			Empleador empleadorExistente = empleadorServicio.obtenerIdEmpleador(id);
+			
+			if(empleadorExistente != null ) {
+				
+				empleadorExistente.setUrlPerfil(fotoImgActualizar);
+				
+				empleadorServicio.actualizarEmpleador(empleadorExistente);
+				
+			}
+				
+			return "redirect:/empleo";
+			
+		}
+	
+	
+	
 }

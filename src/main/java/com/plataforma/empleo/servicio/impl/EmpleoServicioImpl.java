@@ -30,4 +30,14 @@ public class EmpleoServicioImpl implements EmpleoServicio{
 		return empleoRepository.findById(id).orElse(null);
 	}
 
+	@Override
+	public List<Empleo> obtenerEmpleosDeEmpleador(Long id) {
+		return empleoRepository.obtenerEmpleosDeEmpleador(id);
+	}
+
+	@Override
+	public List<Empleo> obtenerEmpleos() {
+		return empleoRepository.obtenerEmpleos();
+	}
+
 }

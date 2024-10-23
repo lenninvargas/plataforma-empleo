@@ -27,7 +27,7 @@ public class Habilidad {
 	
 	private String nombre;
 	
-	@OneToMany(mappedBy = "id_habilidad", targetEntity = Empleado.class)
+	@OneToMany(mappedBy = "habilidad", targetEntity = Empleado.class)
 	private List<Empleado> empleados;
 
 	public Habilidad(String nombre) {

@@ -23,18 +23,22 @@
 </head>
 <body>
 	<nav class="navbar" style="background-color: #224064">
-		<div class="container-fluid container">
+		<div class="container">
 			<a class="navbar-brand" href="#" style="color: white;"> <i
 				class="bi bi-wrench-adjustable"></i> ServiciosYa!
-			</a> <a th:href="@{/editar/{id}(id=${empleado.idPersona})}"> <img
-				th:src="@{'/usuario_foto/' + ${empleado.urlPerfil}}"
-				alt="Foto de perfil" class="profile-pic nav-link">
-			</a>
-			<!-- ESTOY AQUI -->
-
-
-			<a class="btn btn-outline-danger ml-2" th:href="@{/logout}"
+			</a> 
+			
+			<div class= "d-flex align-items-center">
+				<h6 style="color: white" class="me-2" th:text="${empleado.nombre} +  ' ' + ${empleado.apellidos}"></h6>
+				
+				<a class="me-3" th:href="@{/editar/{id}(id=${empleado.idPersona})}"> <img
+					th:src="@{'/usuario_foto/' + ${empleado.urlPerfil}}"
+					alt="Foto de perfil" class="profile-pic nav-link">
+				</a>
+				
+				<a class="btn btn-outline-danger ml-2" th:href="@{/logout}"
 				role="button">Logout</a>
+			</div>
 
 		</div>
 	</nav>
@@ -63,6 +67,7 @@
 				<div class="card mb-4 shadow mb-5 bg-body-tertiary rounded p-0 ms-4"
 					style="height: 520px;width: 450px" th:each="empleo: ${empleos}">
 
+
 					<!-- Imagen del empleo -->
 					<div
 						style="background-color: #224064; color: white; height: 450px; object-fit: cover; overflow: hidden;"
@@ -70,6 +75,56 @@
 						<img class="border-dark shadow bg-body-tertiary rounded" alt="img"
 							th:src="@{'/usuario_foto/' + ${empleo.urlFotoDetalle}}"
 							height="100%" width="100%" style="object-fit: cover;">
+
+						<div class="d-flex justify-content-around">
+
+							<form class="col-md-3 mb-3" th:action="@{/empleo}">
+								<h4>Filtros</h4>
+								<label for="exampleFormControlInput1" class="form-label">Habilidades</label>
+								<select class="form-control">
+									<option selected>Escoger una opción</option>
+									<option th:each="habilidad : ${habilidades}"
+										th:value="${habilidad.id}" th:text="${habilidad.nombre}">
+									</option>
+								</select>
+								<button class="btn btn-secondary mt-4" th:href="@{/empleo}">Buscar</button>
+							</form>
+
+							<div class="col-4 card mb-4 shadow mb-5 bg-body-tertiary rounded"
+								style="height: 520px;" th:each="empleo: ${empleos}">
+
+								<!-- Imagen del empleo -->
+								<div
+									style="background-color: #224064; color: white; height: 450px; object-fit: cover; overflow: hidden;"
+									class="card-header p-0">
+									<img class="border-dark shadow bg-body-tertiary rounded"
+										alt="img"
+										th:src="@{'/usuario_foto/' + ${empleo.urlFotoDetalle}}"
+										height="100%" width="100%" style="object-fit: cover;">
+								</div>
+
+								<!-- Contenido del empleo -->
+								<div class="card-body">
+									<div class="d-flex justify-content-between">
+
+										<h5 class="card-title" th:text="${empleo.titulo}"></h5>
+										<button class="btn btn-primary">Postular</button>
+									</div>
+									<div>
+										<small class="text-body-secondary">Fecha de
+											publicación:</small> <small class="text-body-secondary"
+											th:text="${empleo.fecha}"></small><br> <small
+											class="text-body-secondary">Habilidad:</small> <small
+											class="text-body-secondary"
+											th:text="${empleo.habilidad.nombre}"></small>
+									</div>
+									<p class="card-text" th:text="${empleo.descripcion}"></p>
+									<div class="d-flex justify-content-center"></div>
+								</div>
+
+							</div>
+						</div>
+
 					</div>
 
 					<!-- Contenido del empleo -->

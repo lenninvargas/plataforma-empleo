@@ -24,37 +24,51 @@
 <body>
 
 	<nav class="navbar" style="background-color: #224064">
-		<div class="container-fluid">
+		<div class="container">
 			<a class="navbar-brand" href="#" style="color: white;"> <i
 				class="bi bi-wrench-adjustable"></i> ServiciosYa!
-			</a> <img th:src="@{'/usuario_foto/' + ${empleador.urlPerfil}}"
-				alt="Foto de perfil" class="profile-pic nav-link"> <a
-				class="btn btn-outline-danger ml-2" th:href="@{/logout}"
-				role="button">Logout</a>
+			</a>
+			
+			<div class= "d-flex align-items-center">	
+			<h6 style="color: white" class="me-2" th:text="${empleador.nombre} +  ' ' + ${empleador.apellidos}"></h6>
+				<a class="me-3" th:href="@{/editarEmpleador/{id}(id=${empleador.idPersona})}">
+				
+				<img th:src="@{'/usuario_foto/' + ${empleador.urlPerfil}}"
+					alt="Foto de perfil" class="profile-pic nav-link">
+				</a>
+				
+				<a class="btn btn-outline-danger ml-2" th:href="@{/logout}"
+				role="button">Logout</a> 
+			</div>
+			
+			
 		</div>
 
 	</nav>
-	<div class="container-sm mt-3">
-		<h2>Solicita tu servicio</h2>
+	<div class="container-sm mt-4">
+		<h3>Solicita tu servicio</h3>
 		<hr>
 
 		<div class="d-flex justify-content-around" style="height: 100%">
 			<!-- Formulario Crear Empleo -->
 			<form
-				class="col-md-3 border shadow-sm p-3 mb-5 bg-body-tertiary rounded"
-				th:action="@{/empleo}" method="post" enctype="multipart/form-data" th:object="${empleo}" style="height: 550px">
-				<h4>Crear Empleo</h4>
+				class="col-md-4 border shadow-sm p-3 mb-5 bg-body-tertiary rounded"
+				th:action="@{/empleo}" method="post" enctype="multipart/form-data"
+				th:object="${empleo}" style="height: 550px">
+				<h5>Crear Empleo</h5>
 				<div class="mb-3">
-					<label for="titulo" class="form-label">Título</label> 
-					<input type="text" class="form-control" id="titulo" th:field="*{titulo}">
+					<label for="titulo" class="form-label">Título</label> <input
+						type="text" class="form-control" id="titulo" th:field="*{titulo}">
 				</div>
 				<div class="mb-3">
 					<label for="descripcion" class="form-label">Descripción</label>
-					<textarea class="form-control" id="descripcion" rows="3" th:field="*{descripcion}"></textarea>
+					<textarea class="form-control" id="descripcion" rows="3"
+						th:field="*{descripcion}"></textarea>
 				</div>
 				<div class="mb-3">
 					<label for="validationCustom10" class="form-label">Habilidades</label>
-					<select id="validationCustom10" class="form-control" required th:field="*{habilidad.id}">
+					<select id="validationCustom10" class="form-control" required
+						th:field="*{habilidad.id}">
 						<option th:each="habilidad : ${habilidades}"
 							th:value="${habilidad.id}" th:text="${habilidad.nombre}">
 						</option>
@@ -70,10 +84,12 @@
 			</form>
 
 			<!-- Lista de Empleos -->
-			<div class="col-9 row">
-				<div class="col-5 card mb-4 shadow mb-5 bg-body-tertiary rounded p-0 ms-4"
-					style="height: 520px;width: 450px" th:each="empleo: ${empleos}">
-	
+			<div class="col-8 row">
+				<p class="ms-4">Empleos que publicaste:</p>
+				<div
+					class="col-5 card mb-4 shadow mb-5 bg-body-tertiary rounded p-0 ms-5 mt-2"
+					style="height: 500px; width: 380px" th:each="empleo: ${empleos}">
+
 					<!-- Imagen del empleo -->
 					<div
 						style="background-color: #224064; color: white; height: 450px; object-fit: cover; overflow: hidden;"
@@ -82,22 +98,22 @@
 							th:src="@{'/usuario_foto/' + ${empleo.urlFotoDetalle}}"
 							height="100%" width="100%" style="object-fit: cover;">
 					</div>
-	
+
 					<!-- Contenido del empleo -->
 					<div class="card-body">
 						<div class="d-flex justify-content-between">
-							<h5 class="card-title" th:text="${empleo.titulo}"></h5>
+							<h6 class="card-title" th:text="${empleo.titulo}"></h6>
 						</div>
 						<div>
-							<small class="text-body-secondary">Fecha de publicación:</small> <small
-								class="text-body-secondary" th:text="${empleo.fecha}"></small><br>
+							<small class="text-body-secondary">Fecha de publicación:</small>
+							<small class="text-body-secondary" th:text="${empleo.fecha}"></small><br>
 							<small class="text-body-secondary">Habilidad:</small> <small
 								class="text-body-secondary" th:text="${empleo.habilidad.nombre}"></small>
 						</div>
 						<p class="card-text" th:text="${empleo.descripcion}"></p>
 						<div class="d-flex justify-content-center"></div>
 					</div>
-	
+
 				</div>
 			</div>
 		</div>

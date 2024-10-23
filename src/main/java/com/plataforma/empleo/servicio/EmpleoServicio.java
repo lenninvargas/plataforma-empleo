@@ -11,4 +11,8 @@ public interface EmpleoServicio {
 	public void create(Empleo empleo);
 	
 	public Empleo getById(Integer id);
+	
+	public List<Empleo> obtenerEmpleosDeEmpleador(Long id);
+	
+	public List<Empleo> obtenerEmpleos();
 }
