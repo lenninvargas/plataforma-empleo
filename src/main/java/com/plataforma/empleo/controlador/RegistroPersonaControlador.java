@@ -182,30 +182,32 @@ public class RegistroPersonaControlador {
 	@PostMapping("/editar/{id}")
 	public String actualizarEmpleado(@PathVariable("id") Long id, @ModelAttribute Empleado empleado, HttpSession session, MultipartFile foto) {
 		
-		
-	
-		
-		String fotoImgActualizar = Utilitarios.guardarImagen(foto);
-		
-		
-		
 		Empleado empleadoExistente = empleadoServicio.obtenerIdEmpleado(id);
-		
-		
+	
 		if(empleadoExistente != null ) {
 			
-			empleadoExistente.setCalificacion(empleado.getCalificacion());
+			empleadoExistente.setCelular(empleado.getCelular());
+			empleadoExistente.setCorreo(empleado.getCorreo());
 			empleadoExistente.setHabilidad(empleado.getHabilidad());
-			System.out.println("Id de Habilidad : " + empleado.getHabilidad());
-			empleadoExistente.setUrlPerfil(fotoImgActualizar);
-			
+		
+			 if (!foto.isEmpty()) {
+		            String fotoImgActualizar = Utilitarios.guardarImagen(foto);
+		            empleadoExistente.setUrlPerfil(fotoImgActualizar);
+		            System.out.println("Actualizar Imagen : " + fotoImgActualizar);
+		        } else {
+		            
+		            System.out.println("No se subió una nueva imagen. Manteniendo la imagen actual.");
+		        }
+
 			empleadoServicio.actualizarEmpleado(empleadoExistente);
+			
+			
+			if (!empleadoExistente.getCorreo().equals(session.getAttribute("usuario"))) {
+	            session.setAttribute("usuario", empleadoExistente.getCorreo());
+	        }
 				
 		} 
-		
-		
 		return "redirect:/empleos";
-		
 	}
 	
 	//EDITAR GET EMPLEADOR
@@ -237,26 +239,33 @@ public class RegistroPersonaControlador {
 		@PostMapping("/editarEmpleador/{id}")
 		public String actualizarEmpleador(@PathVariable("id") Long id, @ModelAttribute Empleador empleador, HttpSession session, MultipartFile foto) {
 			
-			
-			
-			String fotoImgActualizar = Utilitarios.guardarImagen(foto);
-			
-			
 		
 			Empleador empleadorExistente = empleadorServicio.obtenerIdEmpleador(id);
 			
 			if(empleadorExistente != null ) {
 				
-				empleadorExistente.setUrlPerfil(fotoImgActualizar);
+				empleadorExistente.setDireccion(empleador.getDireccion());
+				empleadorExistente.setCorreo(empleador.getCorreo());
+				empleadorExistente.setCelular(empleador.getCelular());
 				
+				 if (!foto.isEmpty()) {
+			            String fotoImgActualizar = Utilitarios.guardarImagen(foto);
+			            empleadorExistente.setUrlPerfil(fotoImgActualizar);
+			            System.out.println("Actualizar Imagen : " + fotoImgActualizar);
+			        } else {
+			            
+			            System.out.println("No se subió una nueva imagen. Manteniendo la imagen actual.");
+			        }
+
 				empleadorServicio.actualizarEmpleador(empleadorExistente);
+			
+				
+				if (!empleadorExistente.getCorreo().equals(session.getAttribute("usuario"))) {
+		            session.setAttribute("usuario", empleadorExistente.getCorreo());
+		        }
 				
 			}
 				
-			return "redirect:/crearEmpleo";
-			
-		}
-	
-	
-	
-}
+			return "redirect:/crearEmpleo";	
+		}	
+	}

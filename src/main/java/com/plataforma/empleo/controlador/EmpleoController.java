@@ -62,10 +62,11 @@ public class EmpleoController {
 		}
 		
 		Empleado empleado = empleadoServicio.obtenerEmpleadoPorCorreo(correoUsuario);
-
+		
 		model.addAttribute("empleado", empleado);
 		model.addAttribute("habilidades", habilidadService.ListaHabilidades());
 		model.addAttribute("empleos", empleoService.obtenerEmpleos());	
+		
 		return "empleos";
 		
 	}
