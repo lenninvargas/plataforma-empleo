@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -32,39 +31,51 @@ public class EmpleoController {
 
 	@Autowired
 	private EmpleoServicio empleoService;
-	
+
 	@Autowired
 	private HabilidadServicio habilidadService;
-	
+
 	@Autowired
 	private EmpleadorServicio empleadorServicio;
-	
+
 	@Autowired
 	private EmpleadoServicio empleadoServicio;
-	
-	//TIPO DE USUARIO 1 -> EMPLEADO
+
+	// TIPO DE USUARIO 1 -> EMPLEADO
 	@GetMapping("/empleos")
 	public String getAll(Model model, HttpSession session, @RequestParam(value = "id", defaultValue = "-1") Integer id) {
-		
-		if (id == -1 || id == 20) {
-			model.addAttribute("empleos", empleoService.obtenerEmpleos());	
-		}else {
-			model.addAttribute("empleos", empleoService.obtenerEmpleosPorHabilidad(id));
+		String correoUsuario = (String) session.getAttribute("usuario");
+
+		if (correoUsuario == null) {
+			return "redirect:/";
 		}
+
 		Empleado empleado = empleadoServicio.obtenerEmpleadoPorCorreo(session.getAttribute("usuario").toString());
+		if (id == -1 || id == 20) 
+			model.addAttribute("empleos", empleoService.obtenerEmpleos());
+		 else 
+			model.addAttribute("empleos", empleoService.obtenerEmpleosPorHabilidad(id));
+		
 		
 		model.addAttribute("empleado", empleado);
 		model.addAttribute("habilidades", habilidadService.ListaHabilidades());
 		
 		return "empleos";
 	}
-	
-	//TIPO DE USUARIO 2 -> EMPLEADOR
+
+	// TIPO DE USUARIO 2 -> EMPLEADOR
 	@GetMapping("/crearEmpleo")
 	public String showCreate(Model model, HttpSession session) {
-		Empleador empleador = empleadorServicio.obtenerEmpleadorPorCorreo(session.getAttribute("usuario").toString());
-		
-		model.addAttribute("empleos", empleoService.obtenerEmpleosDeEmpleador(empleador.getIdPersona()));		
+		String correoUsuario = (String) session.getAttribute("usuario");
+
+		if (correoUsuario == null) {
+
+			return "redirect:/";
+		}
+
+		Empleador empleador = empleadorServicio.obtenerEmpleadorPorCorreo(correoUsuario);
+
+		model.addAttribute("empleos", empleoService.obtenerEmpleosDeEmpleador(empleador.getIdPersona()));
 		model.addAttribute("empleador", empleador);
 		model.addAttribute("empleo", new Empleo());
 		model.addAttribute("habilidades", habilidadService.ListaHabilidades());

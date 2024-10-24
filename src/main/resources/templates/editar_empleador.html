@@ -7,42 +7,82 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 <!-- Bootstrap CSS -->
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-	integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+<link 
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
 	crossorigin="anonymous">
 
 <style>
-/* Puedes agregar estilos personalizados aquí */
+.profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
 </style>
 
 <title>Editar Empleador</title>
 </head>
 <body>
-	<div class="container">
-		<h3 class="mt-3">Editar Empleador</h3>
-		<form th:action="@{/editarEmpleador/{id}(id=${empleador.idPersona})}" method="post" th:object="${empleador}"
-			enctype="multipart/form-data">
-			<div class="form-row">
-				<!-- CALIFICACION -->
-				<div class="col-md-6 mb-3">
-					 <input type="hidden" th:field="*{idPersona}" />
-				</div>
-				<!-- FOTO -->
-				<div class="form-group">
-                <label for="exampleFormControlFile1">Foto Empleador</label>
-                <input name="foto" accept="image/*" required type="file" class="form-control-file" id="exampleFormControlFile1">
-           		 </div>
+	<nav class="navbar" style="background-color: #224064">
+        <div class="container">
+            <a class="navbar-brand" href="#" style="color: white;"> <i
+                class="bi bi-wrench-adjustable"></i> ServiciosYa!
+            </a> 
 
-				<div class="form-row">
-					<div class="form-group">
-						<button class="btn btn-primary mt-3" type="submit">Aceptar
-							</button>
-					</div>
+            <div class= "d-flex align-items-center">
+                <h6 style="color: white" class="me-2" th:text="${empleador.nombre} +  ' ' + ${empleador.apellidos}"></h6>
+
+                <a class="me-3" th:href="@{/editarEmpleador/{id}(id=${empleador.idPersona})}"> <img
+                    th:src="@{'/usuario_foto/' + ${empleador.urlPerfil}}"
+                    alt="Foto de perfil" class="profile-pic nav-link">
+                </a>
+
+                <a class="btn btn-outline-danger ml-2" th:href="@{/logout}"
+                role="button">Logout</a>
+            </div>
+
+        </div>
+    </nav>
+	<div class="container">
+		<div class="row">
+			<div
+				class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+				<h1 class="text-center">Editar Empleador</h1>
+				<div class="card-body">
+					<form th:action="@{/editarEmpleador/{id}(id=${empleador.idPersona})}" method="post" th:object="${empleador}"
+			enctype="multipart/form-data">
+
+						<div class="form-group">
+							<input type="hidden" th:field="*{idPersona}" />
+						</div>
+						<div class="form-group">
+							<label for="validationCustom04">Direccion : </label> <input type="text" name="direccion"
+								th:field="*{direccion}" for="validationCustom04" class="form-control" required>
+						</div>
+						<br>
+						<div class="form-group">
+							<label for="validationCustom05">Celular : </label> <input type="text" name="celular"
+								th:field="*{celular}" id="validationCustom05" class="form-control" required>
+						</div>
+						<br>
+						<div class="form-group">
+							<label for="validationCustom06">Email : </label> <input type="email" name="correo"
+								th:field="*{correo}" id="validationCustom06" class="form-control" required>
+						</div>
+						<br>
+						<div class="form-group">
+								<label for="exampleFormControlFile1">Foto Empleado : </label> 
+								  <input name="foto" accept="image/*" required type="file" class="form-control-file" id="exampleFormControlFile1">
+						</div>
+						<div class="box-footer">
+							<button class="btn btn-success">Guardar</button>
+						</div>
+					</form>
 				</div>
 			</div>
-		</form>
 		</div>
+	</div>
 	<script
 		src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
 		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

@@ -154,19 +154,20 @@ public class RegistroPersonaControlador {
 	@GetMapping("/editar/{id}")
 	public String mostrarFormularioEdicionEmpleado(@PathVariable("id") Long id, Model model, HttpSession session) {
 	  
+	
+		String correoUsuario = (String) session.getAttribute("usuario");
+		
+		Usuario usuario = usuarioServicio.buscarUsuarioPorCorreo(correoUsuario);
+		
+		if(usuario == null) {
+						
+			return "redirect:/";
+		}
+		
 		
 		//MODEL
 		model.addAttribute("habilidades", habilidadServicio.ListaHabilidades());
-		
-		Usuario sessionUsuario = usuarioServicio.buscarUsuarioPorCorreo(session.getAttribute("usuario").toString());
-		
-		if(sessionUsuario == null) {
-			
-			return "redirect:/";
-			
-		}
 	
-		
 	    Empleado empleado = empleadoServicio.obtenerIdEmpleado(id);
 	    
 	    if (empleado != null) {
@@ -182,14 +183,7 @@ public class RegistroPersonaControlador {
 	public String actualizarEmpleado(@PathVariable("id") Long id, @ModelAttribute Empleado empleado, HttpSession session, MultipartFile foto) {
 		
 		
-		
-		Usuario sessionUsuario = usuarioServicio.buscarUsuarioPorCorreo(session.getAttribute("usuario").toString());
-		
-		if(sessionUsuario == null) {
-						
-			return "redirect:/";
-						
-		}
+	
 		
 		String fotoImgActualizar = Utilitarios.guardarImagen(foto);
 		
@@ -218,12 +212,13 @@ public class RegistroPersonaControlador {
 		@GetMapping("/editarEmpleador/{id}")
 		public String mostrarFormularioEdicion(@PathVariable("id") Long id, Model model, HttpSession session) {
 		 
-			Usuario sessionUsuario = usuarioServicio.buscarUsuarioPorCorreo(session.getAttribute("usuario").toString());
+			String correoUsuario = (String) session.getAttribute("usuario");
 			
-			if(sessionUsuario == null) {
-				
+			Usuario usuario = usuarioServicio.buscarUsuarioPorCorreo(correoUsuario);
+			
+			if(usuario == null) {
+							
 				return "redirect:/";
-				
 			}
 			
 			Empleador empleador = empleadorServicio.obtenerIdEmpleador(id);
@@ -244,14 +239,6 @@ public class RegistroPersonaControlador {
 			
 			
 			
-			Usuario sessionUsuario = usuarioServicio.buscarUsuarioPorCorreo(session.getAttribute("usuario").toString());
-			
-			if(sessionUsuario == null) {
-							
-				return "redirect:/";
-							
-			}
-			
 			String fotoImgActualizar = Utilitarios.guardarImagen(foto);
 			
 			
@@ -266,7 +253,7 @@ public class RegistroPersonaControlador {
 				
 			}
 				
-			return "redirect:/empleo";
+			return "redirect:/crearEmpleo";
 			
 		}
 	
