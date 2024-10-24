@@ -45,19 +45,19 @@ public class EmpleoController {
 	@GetMapping("/empleos")
 	public String getAll(Model model, HttpSession session, @RequestParam(value = "id", defaultValue = "-1") Integer id) {
 		String correoUsuario = (String) session.getAttribute("usuario");
+		//Empleado empleado = empleadoServicio.obtenerEmpleadoPorCorreo(correoUsuario);
 
 		if (correoUsuario == null) {
 			return "redirect:/";
 		}
-
-		Empleado empleado = empleadoServicio.obtenerEmpleadoPorCorreo(session.getAttribute("usuario").toString());
-		if (id == -1 || id == 20) 
+		
+		if (id == -1) {
 			model.addAttribute("empleos", empleoService.obtenerEmpleos());
-		 else 
+		} else { 
 			model.addAttribute("empleos", empleoService.obtenerEmpleosPorHabilidad(id));
+		}
 		
-		
-		model.addAttribute("empleado", empleado);
+		//model.addAttribute("empleado", empleado);
 		model.addAttribute("habilidades", habilidadService.ListaHabilidades());
 		
 		return "empleos";

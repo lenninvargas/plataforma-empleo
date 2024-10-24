@@ -24,94 +24,90 @@ import com.plataforma.empleo.utils.Utilitarios;
 
 import jakarta.servlet.http.HttpSession;
 
-
 @Controller
 public class RegistroPersonaControlador {
 
 	@Autowired
 	private UsuarioServicio usuarioServicio;
-	
+
 	@Autowired
 	private TipoUsuarioServicio tipoUsuarioServicio;
-	
+
 	@Autowired
 	private EmpleadoServicio empleadoServicio;
-	
+
 	@Autowired
 	private EmpleadorServicio empleadorServicio;
-	
+
 	@Autowired
 	private HabilidadServicio habilidadServicio;
-	
-	
+
 	@GetMapping("/")
 	public String login(Model model) {
-		
+
 		model.addAttribute("usuario", new Usuario());
-		
+
 		model.addAttribute("tipoUsuarios", tipoUsuarioServicio.obtenerTipoUsuarios());
-		
+
 		return "login";
 	}
-	
+
 	@PostMapping("/login")
 	public String loginPost(Usuario usuario, Model model, HttpSession session) {
-		
-		boolean usuarioValido = usuarioServicio.validarUsuario(usuario, session);
-		
-		Usuario usuarioTipo = usuarioServicio.buscarUsuarioPorCorreo(session.getAttribute("usuario").toString());
-		
-		if(usuarioValido) {
 
-			if(usuarioTipo.getTipoUsuario().getNombre().equals("Empleado")) {
+		boolean usuarioValido = usuarioServicio.validarUsuario(usuario, session);
+
+		Usuario usuarioTipo = usuarioServicio.buscarUsuarioPorCorreo(session.getAttribute("usuario").toString());
+
+		if (usuarioValido) {
+
+			if (usuarioTipo.getTipoUsuario().getNombre().equals("Empleado")) {
 				System.out.println(usuarioTipo.getTipoUsuario().getNombre());
 				return "redirect:/empleos";
-				
-			}else if(usuarioTipo.getTipoUsuario().getNombre().equals("Empleador")) {
+
+			} else if (usuarioTipo.getTipoUsuario().getNombre().equals("Empleador")) {
 				System.out.println(usuarioTipo.getTipoUsuario().getNombre());
 				return "redirect:/crearEmpleo";
 			}
 
 		}
-		
+
 		model.addAttribute("loginInvalido", "No existe el usuario");
 		model.addAttribute("usuario", new Usuario());
-		
+
 		return "login";
 	}
-	
+
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/";
 	}
-	
+
 	@GetMapping("/registrar")
 	public String mostrarFormularioCrearUsuario(Model model, MultipartFile foto) {
-			
+
 		model.addAttribute("usuario", new Usuario());
-		
+
 		model.addAttribute("tipoUsuarios", tipoUsuarioServicio.obtenerTipoUsuarios());
-		
+
 		return "registrar_usuario";
 	}
-	
-	//CHEQUEAR ESTE METODO.
+
+	// CHEQUEAR ESTE METODO.
 	@PostMapping("/registrar")
 	public String crearPersona(@ModelAttribute Usuario usuario, Model model, @RequestParam("foto") MultipartFile foto) {
-	    
+
 		TipoUsuario tipoUsuario = tipoUsuarioServicio.obtenerPorId(usuario.getTipoUsuario().getId());
-		
 
 		String hashedPassword = Utilitarios.extraerHash(usuario.getPassword());
-		
+
 		String fotoImg = Utilitarios.guardarImagen(foto);
 
+		if (tipoUsuario.getNombre().equalsIgnoreCase("Empleado")) {
 
-		if(tipoUsuario.getNombre().equalsIgnoreCase("Empleado")) {
-			
 			Empleado empleado = new Empleado();
-		
+
 			empleado.setIdPersona(usuario.getIdPersona());
 			empleado.setNombre(usuario.getNombre());
 			empleado.setApellidos(usuario.getApellidos());
@@ -123,14 +119,12 @@ public class RegistroPersonaControlador {
 			empleado.setFechaNacimiento(usuario.getFechaNacimiento());
 			empleado.setTipoUsuario(usuario.getTipoUsuario());
 			empleado.setUrlPerfil(fotoImg);
-			
 
 			empleadoServicio.guardarEmpleado(empleado);
-			
-		}else if(tipoUsuario.getNombre().equalsIgnoreCase("Empleador")) {
-			
+
+		} else if (tipoUsuario.getNombre().equalsIgnoreCase("Empleador")) {
+
 			Empleador empleador = new Empleador();
-			
 
 			empleador.setIdPersona(usuario.getIdPersona());
 			empleador.setNombre(usuario.getNombre());
@@ -139,124 +133,111 @@ public class RegistroPersonaControlador {
 			empleador.setDni(usuario.getDni());
 			empleador.setCelular(usuario.getCelular());
 			empleador.setCorreo(usuario.getCorreo());
-			empleador.setPassword(hashedPassword);	
+			empleador.setPassword(hashedPassword);
 			empleador.setFechaNacimiento(usuario.getFechaNacimiento());
 			empleador.setTipoUsuario(usuario.getTipoUsuario());
 			empleador.setUrlPerfil(fotoImg);
-			
+
 			empleadorServicio.crearEmpleador(empleador);
 		}
-		
+
 		return "redirect:/";
 	}
-	
-	//EDITAR GET EMPLEADO
+
+	// EDITAR GET EMPLEADO
 	@GetMapping("/editar/{id}")
 	public String mostrarFormularioEdicionEmpleado(@PathVariable("id") Long id, Model model, HttpSession session) {
-	  
-	
+
 		String correoUsuario = (String) session.getAttribute("usuario");
-		
+
 		Usuario usuario = usuarioServicio.buscarUsuarioPorCorreo(correoUsuario);
-		
-		if(usuario == null) {
-						
+
+		if (usuario == null) {
+
 			return "redirect:/";
 		}
-		
-		
-		//MODEL
+
+		// MODEL
 		model.addAttribute("habilidades", habilidadServicio.ListaHabilidades());
-	
-	    Empleado empleado = empleadoServicio.obtenerIdEmpleado(id);
-	    
-	    if (empleado != null) {
-	        model.addAttribute("empleado", empleado);
-	        return "editar_empleado";
-	    }
-	    
-	    return "error";
-	}	
-	
-	//EDITAR POST EMPLEADO
+
+		Empleado empleado = empleadoServicio.obtenerIdEmpleado(id);
+
+		if (empleado != null) {
+			model.addAttribute("empleado", empleado);
+			return "editar_empleado";
+		}
+
+		return "error";
+	}
+
+	// EDITAR POST EMPLEADO
 	@PostMapping("/editar/{id}")
-	public String actualizarEmpleado(@PathVariable("id") Long id, @ModelAttribute Empleado empleado, HttpSession session, MultipartFile foto) {
-		
-		
-	
-		
+	public String actualizarEmpleado(@PathVariable("id") Long id, @ModelAttribute Empleado empleado,
+			HttpSession session, MultipartFile foto) {
+
 		String fotoImgActualizar = Utilitarios.guardarImagen(foto);
-		
-		
-		
 		Empleado empleadoExistente = empleadoServicio.obtenerIdEmpleado(id);
-		
-		
-		if(empleadoExistente != null ) {
-			
-			empleadoExistente.setCalificacion(empleado.getCalificacion());
+
+		if (empleadoExistente != null) {
+
+			empleadoExistente.setDireccion(empleado.getDireccion());
+			empleadoExistente.setCelular(empleado.getCelular());
+			empleadoExistente.setCorreo(empleado.getCorreo());
 			empleadoExistente.setHabilidad(empleado.getHabilidad());
-			System.out.println("Id de Habilidad : " + empleado.getHabilidad());
-			empleadoExistente.setUrlPerfil(fotoImgActualizar);
+			
+			if (fotoImgActualizar != null) {
+				empleadoExistente.setUrlPerfil(fotoImgActualizar);
+			}
 			
 			empleadoServicio.actualizarEmpleado(empleadoExistente);
-				
-		} 
-		
-		
-		return "redirect:/empleos";
-		
-	}
-	
-	//EDITAR GET EMPLEADOR
-		@GetMapping("/editarEmpleador/{id}")
-		public String mostrarFormularioEdicion(@PathVariable("id") Long id, Model model, HttpSession session) {
-		 
-			String correoUsuario = (String) session.getAttribute("usuario");
-			
-			Usuario usuario = usuarioServicio.buscarUsuarioPorCorreo(correoUsuario);
-			
-			if(usuario == null) {
-							
-				return "redirect:/";
-			}
-			
-			Empleador empleador = empleadorServicio.obtenerIdEmpleador(id);
-			
-		   
-		    
-		    if (empleador != null) {
-		    	model.addAttribute("empleador", empleador);
-		    	return "editar_empleador";
-		    }
-		  
-		    return "error";
-		}	
-		
-		//EDITAR POST EMPLEADOR
-		@PostMapping("/editarEmpleador/{id}")
-		public String actualizarEmpleador(@PathVariable("id") Long id, @ModelAttribute Empleador empleador, HttpSession session, MultipartFile foto) {
-			
-			
-			
-			String fotoImgActualizar = Utilitarios.guardarImagen(foto);
-			
-			
-		
-			Empleador empleadorExistente = empleadorServicio.obtenerIdEmpleador(id);
-			
-			if(empleadorExistente != null ) {
-				
-				empleadorExistente.setUrlPerfil(fotoImgActualizar);
-				
-				empleadorServicio.actualizarEmpleador(empleadorExistente);
-				
-			}
-				
-			return "redirect:/crearEmpleo";
-			
 		}
-	
-	
-	
+
+		return "redirect:/empleos";
+
+	}
+
+	// EDITAR GET EMPLEADOR
+	@GetMapping("/editarEmpleador/{id}")
+	public String mostrarFormularioEdicion(@PathVariable("id") Long id, Model model, HttpSession session) {
+
+		String correoUsuario = (String) session.getAttribute("usuario");
+
+		Usuario usuario = usuarioServicio.buscarUsuarioPorCorreo(correoUsuario);
+
+		if (usuario == null) {
+
+			return "redirect:/";
+		}
+
+		Empleador empleador = empleadorServicio.obtenerIdEmpleador(id);
+
+		if (empleador != null) {
+			model.addAttribute("empleador", empleador);
+			return "editar_empleador";
+		}
+
+		return "error";
+	}
+
+	// EDITAR POST EMPLEADOR
+	@PostMapping("/editarEmpleador/{id}")
+	public String actualizarEmpleador(@PathVariable("id") Long id, @ModelAttribute Empleador empleador,
+			HttpSession session, MultipartFile foto) {
+
+		String fotoImgActualizar = Utilitarios.guardarImagen(foto);
+
+		Empleador empleadorExistente = empleadorServicio.obtenerIdEmpleador(id);
+
+		if (empleadorExistente != null) {
+
+			empleadorExistente.setUrlPerfil(fotoImgActualizar);
+
+			empleadorServicio.actualizarEmpleador(empleadorExistente);
+
+		}
+
+		return "redirect:/crearEmpleo";
+
+	}
+
 }
