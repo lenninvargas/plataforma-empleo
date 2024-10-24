@@ -51,14 +51,18 @@ public class EmpleoController {
 			return "redirect:/";
 		}
 		
+
 		if (id == -1) {
 			model.addAttribute("empleos", empleoService.obtenerEmpleos());
 		} else { 
 			model.addAttribute("empleos", empleoService.obtenerEmpleosPorHabilidad(id));
 		}
+
+		Empleado empleado = empleadoServicio.obtenerEmpleadoPorCorreo(correoUsuario);
 		
-		//model.addAttribute("empleado", empleado);
+		model.addAttribute("empleado", empleado);
 		model.addAttribute("habilidades", habilidadService.ListaHabilidades());
+		model.addAttribute("empleos", empleoService.obtenerEmpleos());	
 		
 		return "empleos";
 	}

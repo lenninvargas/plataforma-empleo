@@ -55,6 +55,8 @@
 						enctype="multipart/form-data">
 						<div class="form-group">
 							<input type="hidden" th:field="*{idPersona}" />
+							<input type="hidden" th:field="*{nombre}" />
+							<input type="hidden" th:field="*{apellidos}" />
 						</div>
 						<div class="form-group">
 							<label for="validationCustom04">Direccion : </label> <input type="text" name="direccion"
@@ -71,10 +73,12 @@
 								th:field="*{correo}" id="validationCustom06" class="form-control" >
 						</div>
 						<br>
+				
+
 						<div class="form-group">
 							<label for="validationCustom08" class="form-label">Habilidad</label>
-							<select id="validationCustom08" class="form-control"
-								th:field=*{habilidad}>
+
+							<select id="validationCustom08" class="form-control">			
 								<option th:each="habilidad : ${habilidades}"
 									th:value="${habilidad.id}" th:text="${habilidad.nombre}">
 								</option>
@@ -83,7 +87,11 @@
 						<br>
 						<div class="form-group">
 								<label for="exampleFormControlFile1">Foto Empleado : </label> 
+
 								  <input name="foto" type="file" accept="image/*" class="form-control-file" id="exampleFormControlFile1">
+
+								  <input name="foto" accept="image/*"  type="file" class="form-control-file" id="exampleFormControlFile1">
+
 						</div>
 						<div class="box-footer">
 							<button class="btn btn-success">Guardar</button>
