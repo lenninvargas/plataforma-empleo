@@ -15,4 +15,6 @@ public interface EmpleoServicio {
 	public List<Empleo> obtenerEmpleosDeEmpleador(Long id);
 	
 	public List<Empleo> obtenerEmpleos();
+	
+	public List<Empleo> obtenerEmpleosPorHabilidad(Integer id);
 }

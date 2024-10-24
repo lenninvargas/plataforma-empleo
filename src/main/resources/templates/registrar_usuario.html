@@ -15,6 +15,13 @@
 <title>Registrar Usuario</title>
 </head>
 <body>
+	<nav class="navbar" style="background-color: #224064">
+		<div class="container">
+			<a class="navbar-brand" href="#" style="color: white;"> <i
+				class="bi bi-wrench-adjustable"></i> ServiciosYa!
+			</a>
+		</div>
+	</nav>
 	<div class="container">
 		<div th:if="${registroCorrecto}" class="alert alert-success mt-4"
 			role="alert">
@@ -66,19 +73,21 @@
 				</div>
 
 				<div class="col-md-6 mb-3">
-					<label for="validationCustom10" class="form-label">Tipo Usuario</label> 
-					<select id="validationCustom10" class="form-control" th:field="*{tipoUsuario.id}" required>
+					<label for="validationCustom10" class="form-label">Tipo
+						Usuario</label> <select id="validationCustom10" class="form-control"
+						th:field="*{tipoUsuario.id}" required>
 						<option th:each="tipoUsuario : ${tipoUsuarios}"
 							th:value="${tipoUsuario.id}" th:text="${tipoUsuario.nombre}">
 						</option>
 					</select>
 				</div>
-				
+
 				<!-- FOTO -->
 				<div class="form-group">
-                	<label for="exampleFormControlFile1">Foto Usuario</label>
-                	<input name="foto" accept="image/*" required type="file" class="form-control-file" id="exampleFormControlFile1">
-           		 </div>
+					<label for="exampleFormControlFile1">Foto Usuario</label> <input
+						name="foto" accept="image/*" required type="file"
+						class="form-control-file" id="exampleFormControlFile1">
+				</div>
 
 				<div class="form-row">
 					<div class="form-group">

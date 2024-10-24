@@ -40,4 +40,9 @@ public class EmpleoServicioImpl implements EmpleoServicio{
 		return empleoRepository.obtenerEmpleos();
 	}
 
+	@Override
+	public List<Empleo> obtenerEmpleosPorHabilidad(Integer id) {
+		return empleoRepository.obtenerEmpleosPorHabilidad(id);
+	}
+
 }

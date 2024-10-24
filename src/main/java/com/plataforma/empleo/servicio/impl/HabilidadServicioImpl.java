@@ -26,6 +26,4 @@ public class HabilidadServicioImpl implements HabilidadServicio{
 		return habilidadRepository.save(habilidadNueva);
 	}
 
-	
-
 }

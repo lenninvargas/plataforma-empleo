@@ -16,4 +16,7 @@ public interface EmpleoRepositorio extends CrudRepository<Empleo, Integer>{
 	
 	@Query(value = "SELECT * FROM tb_empleo order by id_empleo desc", nativeQuery = true)
 	List<Empleo> obtenerEmpleos(); 
+	
+	@Query(value = "SELECT * FROM tb_empleo where id_habilidad =:id order by id_empleo desc", nativeQuery = true)
+	List<Empleo> obtenerEmpleosPorHabilidad(Integer id);
 }
