@@ -64,18 +64,8 @@ public class PlataformaEmpleoApplication implements CommandLineRunner {
 			Habilidad habilidad6 = new Habilidad("Jardinero");
 			habilidadRepositorio.save(habilidad6);
 			
-			Habilidad habilidad7 = new Habilidad("Chofer");
-			habilidadRepositorio.save(habilidad7);
-			
-			Habilidad habilidad8 = new Habilidad("Cobrador");
-			habilidadRepositorio.save(habilidad8);
-			
 			Habilidad habilidad9 = new Habilidad("Albañil");
-			habilidadRepositorio.save(habilidad9);
-			
-			Habilidad habilidad10 = new Habilidad("Vigilancia");
-			habilidadRepositorio.save(habilidad10);
-			
+			habilidadRepositorio.save(habilidad9);	
 		}
 		
 	}

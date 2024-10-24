@@ -44,6 +44,8 @@ public class EmpleoController {
 	// TIPO DE USUARIO 1 -> EMPLEADO
 	@GetMapping("/empleos")
 	public String getAll(Model model, HttpSession session, @RequestParam(value = "id", defaultValue = "-1") Integer id) {
+		
+		
 		String correoUsuario = (String) session.getAttribute("usuario");
 		//Empleado empleado = empleadoServicio.obtenerEmpleadoPorCorreo(correoUsuario);
 
@@ -55,6 +57,9 @@ public class EmpleoController {
 		if (id == -1) {
 			model.addAttribute("empleos", empleoService.obtenerEmpleos());
 		} else { 
+			
+			System.out.println("Habilidad id : " + id);
+			
 			model.addAttribute("empleos", empleoService.obtenerEmpleosPorHabilidad(id));
 		}
 
@@ -62,7 +67,7 @@ public class EmpleoController {
 		
 		model.addAttribute("empleado", empleado);
 		model.addAttribute("habilidades", habilidadService.ListaHabilidades());
-		model.addAttribute("empleos", empleoService.obtenerEmpleos());	
+		
 		
 		return "empleos";
 	}
@@ -70,6 +75,7 @@ public class EmpleoController {
 	// TIPO DE USUARIO 2 -> EMPLEADOR
 	@GetMapping("/crearEmpleo")
 	public String showCreate(Model model, HttpSession session) {
+		
 		String correoUsuario = (String) session.getAttribute("usuario");
 
 		if (correoUsuario == null) {
