@@ -15,6 +15,7 @@ public class ListaEmpleadosController {
 	
 	@GetMapping("/empleados")
 	 public String getAll(Model model) {
+		
 		model.addAttribute("empleados", empleadoService.getAll());
 	  return "listaEmpleados";
 	 }

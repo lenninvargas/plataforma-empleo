@@ -46,18 +46,45 @@ public class EmpleoController {
 	//TIPO DE USUARIO 1 -> EMPLEADO
 	@GetMapping("/empleos")
 	public String getAll(Model model, HttpSession session) {
-		Empleado empleado = empleadoServicio.obtenerEmpleadoPorCorreo(session.getAttribute("usuario").toString());
+		
+		
+		
+		//CAMBIOS
+		//Empleado empleado = empleadoServicio.obtenerEmpleadoPorCorreo(session.getAttribute("usuario").toString());
+		//System.out.println("Empleado : " + empleado);
+		
+		String correoUsuario = (String) session.getAttribute("usuario");
+		
+		
+		if(correoUsuario == null ) {
+			
+			return "redirect:/";
+		}
+		
+		Empleado empleado = empleadoServicio.obtenerEmpleadoPorCorreo(correoUsuario);
 
 		model.addAttribute("empleado", empleado);
 		model.addAttribute("habilidades", habilidadService.ListaHabilidades());
 		model.addAttribute("empleos", empleoService.obtenerEmpleos());	
 		return "empleos";
+		
 	}
 	
 	//TIPO DE USUARIO 2 -> EMPLEADOR
 	@GetMapping("/crearEmpleo")
 	public String showCreate(Model model, HttpSession session) {
-		Empleador empleador = empleadorServicio.obtenerEmpleadorPorCorreo(session.getAttribute("usuario").toString());
+		
+		//CAMBIOS
+		//Empleado empleado = empleadoServicio.obtenerEmpleadoPorCorreo(session.getAttribute("usuario").toString());
+		String correoUsuario = (String) session.getAttribute("usuario");
+		
+		
+		if(correoUsuario == null ) {
+					
+			return "redirect:/";
+		}
+		
+		Empleador empleador = empleadorServicio.obtenerEmpleadorPorCorreo(correoUsuario);
 		
 		model.addAttribute("empleador", empleador);	
 		model.addAttribute("empleos", empleoService.obtenerEmpleosDeEmpleador(empleador.getIdPersona()));		
